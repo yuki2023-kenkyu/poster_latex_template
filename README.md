@@ -55,7 +55,7 @@ A0_Portrait_Poster/
 - A0縦長（841 × 1189 mm），**主ヘッダ116 mm**，Reference帯16 mm，フッタ28 mm．
 - 主ヘッダ全域を濃紺に統一．左約23%のロゴ領域で**ポスター番号を中央揃え**，右約77%にタイトル・著者・所属を中央揃え．ヘッダ内の文字・ロゴは上端寄せ．
 - 番号51 pt，タイトル58 pt，発表者46 pt，共著者46 pt，所属40 pt，本文40 pt（標準レベル）．色・サイズ・間隔は `poster-config.tex` で変更可能．
-- Reference帯は**淡い紺色**．この帯では引用全体の角括弧を省略し，`.bib` の `author`・`shortjournal`/`journaltitle`・`volume`・`eid`/`pages`・`year`・`archivePrefix`・`eprint` から生成します．例：`Reference: Yuki Hashimoto, Kazuharu Bamba, and Sanjay Mandal, JCAP 09, 146 (2026) [arXiv:2604.22372].` 著者は名→姓ですべて表示し，雑誌名はイタリック，巻は太字，末尾にはピリオドを付けます．`eprint` がなければ識別子部分は省略します．本文内の引用は従来どおり短縮形・角括弧付きです．本文内の `\\postercite{...}` は従来どおり角括弧付き．
+- Reference帯は**淡い紺色**．この帯では引用全体の角括弧を省略し，`.bib` の `author`・`shortjournal`/`journaltitle`・`volume`・`eid`/`pages`・`year`・`archivePrefix`・`eprint` から生成します．例：`Reference: Yuki Hashimoto, Kazuharu Bamba, and Sanjay Mandal, JCAP 09, 146 (2026) [arXiv:2604.22372].` 著者は名→姓ですべて表示し，雑誌名はイタリック，巻は太字，末尾にはピリオドを付けます．`eprint` がなければ識別子部分は省略します．本文内の引用は従来どおり短縮形・角括弧付きです．本文の引用には標準の `\cite{...}` のみを使用します．
 - 従来の2段組，Section見出し・区切り線，`documents/*.tex` の分割管理は維持．主要文献 `Hashimoto:2026zcr` と `references.bib` の既存エントリを保持．
 
 ## 編集
@@ -70,7 +70,7 @@ A0_Portrait_Poster/
 
 ## 引用
 
-各セクションの本文の直後に `\cite{aghanim2020}` と書きます．標準の `\cite` なので VS Code の文献キー補完を使えます．旧 `\postercite` も互換性のため残します．参考文献は `references.bib` に登録します．本文引用はタイトルを除き，右寄せ・淡色・小さめで以下の表記になります：
+各セクションの本文の直後に `\cite{aghanim2020}` と書きます．標準の `\cite` なので VS Code の文献キー補完を使えます．専用の `\postercite` エイリアスは廃止しました．参考文献は `references.bib` に登録します．本文引用はタイトルを除き，右寄せ・淡色・小さめで以下の表記になります：
 
 `[Aghanim et al., A&A 641, A6 (2020)]`
 
@@ -109,3 +109,12 @@ A0_Portrait_Poster/
 - **Abstract**: `documents/abstract.tex` に本文だけを記述します．`main.tex` 側のnavyの枠線は残し，Section名と区切り線は表示しません．
 - **Figures**: Beamerの標準 `figure`，`\centering`，`\includegraphics`，`\caption` を使用します．番号付きキャプションはBeamer標準設定です．
 - **VS Code**: ワークスペースの `settings.json` で最初のlatexmkレシピを標準指定し，magic commentビルドと外部ビルドコマンドを無効化しています．通常のLaTeX Workshopビルドは `build/` に出力します．手動の `lualatex` や別の拡張機能によるコンパイルまでは制御しません．
+
+
+## Sectionの自動付番とTableの表示（2026-11-18）
+
+- 本文のSectionは `posterblock` と `posteralertblock` 環境で記述します．見出しには番号を含めず，左列→右列の `main.tex` 読込順に `I.`，`II.`，`III.`，`IV.` が自動付番されます．例：`\\begin{posterblock}{Background and Motivation}`．本文ファイルごとに番号を手書きする必要はありません．
+- 引用は **`\\cite{文献キー}` だけ**を使用します．`\\postercite` のエイリアスと使われていない `\\posterciteinline` を削除しました．Reference帯の全著者名等の専用書誌処理は維持します．
+- TableはAPSの[Style Basics](https://journals.aps.org/authors/style-basics)に基づき，**TABLE I.** の大文字ローマ数字，表の上の `\\caption`，見出し下の1本の水平線，縦罫線なし，単位を付した列名を標準の `table`・`tabular`・`\\hline` で表現します．`documents/results.tex` は測定値ではない例示データを使用しています．
+- 図と表のキャプションは同じBeamerの標準 `\\caption` を使い，列幅内で中央揃えします．TableとFigureの番号カウンタは独立しています．
+- ポスター形式の例示であり，PRD誌面そのもののREVTeXクラスへ変更したわけではありません．
