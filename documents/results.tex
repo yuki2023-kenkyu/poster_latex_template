@@ -4,6 +4,16 @@
 \begin{alertblock}{3. Results}
 Present the quantitative results, including uncertainties and conditions under
 which the calculations or measurements were obtained.
-\PosterFigurePlaceholder{Place a result figure here}
-{\PosterCaptionFont\color{PosterMuted}Figure 2. Replace with a result figure and caption.\par}
+\begin{figure}
+  \centering
+  % Replace this temporary box with \includegraphics[width=.9\linewidth]{figures/plot.pdf}
+  \setlength{\fboxsep}{0pt}%
+  \fcolorbox{PosterRule}{PosterFigurePale}{%
+    \parbox[c][125mm][c]{0.90\linewidth}{%
+      \centering\PosterPlaceholderFont\color{PosterMuted}
+      Replace with \texttt{\textbackslash includegraphics}%
+    }%
+  }
+  \caption{Replace with the actual result figure and caption.}
+\end{figure}
 \end{alertblock}

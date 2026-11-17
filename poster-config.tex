@@ -13,7 +13,7 @@
 % Base font sizes in points (before applying the font-level preset).
 % Body 40 pt is the requested PowerPoint-equivalent size at standard level.
 % You can override individual roles here without changing posterstyle.sty.
-\newcommand{\PosterNumberPt}{43}
+\newcommand{\PosterNumberPt}{51}
 \newcommand{\PosterTitlePt}{58}
 \newcommand{\PosterPresenterPt}{46}
 \newcommand{\PosterCoauthorPt}{46}
@@ -26,20 +26,32 @@
 \newcommand{\PosterFooterPt}{22}
 
 % Content: replace these examples with your own information.
+% Hide the number to center the logo in the left navy header zone.
+\newif\ifPosterShowNumber
+\PosterShowNumbertrue
 \newcommand{\PosterNumber}{P66}
 \newcommand{\PosterTitle}{Reconstruction of the cosmic expansion history\\from cosmic chronometer data using an artificial neural network}
-\newcommand{\PosterPresenter}{Yuki Hashimoto\textsuperscript{1}}
-\newcommand{\PosterCoauthors}{Kazuharu Bamba\textsuperscript{1}, Sanjay Mandal\textsuperscript{1}}
-\newcommand{\PosterAffiliations}{%
-  \textsuperscript{1}Fukushima University\hspace{1.5em}%
-  \textsuperscript{2}Collaborating Institute%
-}
+% Suppress superscripts when all authors share the same affiliation.
+\newif\ifPosterMultipleAffiliations
+\PosterMultipleAffiliationsfalse
+\newcommand{\PosterAffiliationMark}[1]{%
+  \ifPosterMultipleAffiliations\textsuperscript{#1}\fi}
+\newcommand{\PosterPresenter}{Yuki Hashimoto\PosterAffiliationMark{1}}
+\newcommand{\PosterCoauthors}{Kazuharu Bamba\PosterAffiliationMark{1}, Sanjay Mandal\PosterAffiliationMark{1}}
+\newcommand{\PosterAffiliations}{\PosterAffiliationMark{1}Fukushima University}
+% Multiple-affiliation example (after setting ...true):
+% \renewcommand{\PosterCoauthors}{Kazuharu Bamba\PosterAffiliationMark{1}, Sanjay Mandal\PosterAffiliationMark{2}}
+% \renewcommand{\PosterAffiliations}{\PosterAffiliationMark{1}Fukushima University\hspace{1.5em}\PosterAffiliationMark{2}Collaborating Institute}
 
 % Replace this file with your own university logo (PDF, PNG, or JPG).
 \newcommand{\PosterLogoFile}{./logos/fukushima-university-logo.png}
 
 % Main publication: shown in the slim full-width band immediately below the header.
 % Set the BibLaTeX key of the featured paper from references.bib.
+% Reference strip can be disabled without leaving a blank band.
+% Abstract and two-column body then move up by its exact height.
+\newif\ifPosterShowReference
+\PosterShowReferencetrue
 \newcommand{\PosterFeaturedPaperLabel}{Reference:}
 \newcommand{\PosterFeaturedPaperKey}{Hashimoto:2026zcr}
 
@@ -111,6 +123,9 @@
 % White box above the logo: same width as the left logo column.
 \newlength{\PosterNumberBoxHeight}
 \setlength{\PosterNumberBoxHeight}{21mm}
+% Extend the top of the number box while preserving its bottom edge.
+\newlength{\PosterNumberBoxGrow}
+\setlength{\PosterNumberBoxGrow}{12mm}
 \newlength{\PosterLogoMaxHeight}
 \setlength{\PosterLogoMaxHeight}{73mm}
 
