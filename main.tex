@@ -30,8 +30,18 @@
 \vspace*{\PosterHeaderTopInset}
 \PosterHeader
 
-% One-column abstract (full width).
-\input{documents/abstract.tex}
+% Abstract only: bordered, single-column, and closer to the Reference band.
+\vspace*{-\PosterAbstractRaise}
+\begingroup
+  \setlength{\fboxsep}{\PosterAbstractFramePadding}%
+  \setlength{\fboxrule}{\PosterAbstractFrameRule}%
+  \noindent\fcolorbox{PosterAccent}{white}{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
+      \input{documents/abstract.tex}%
+    \end{minipage}%
+  }%
+  \par
+\endgroup
 \vspace{\PosterBlockGap}
 
 % Two-column body. Each section is maintained in its own .tex file.

@@ -55,10 +55,10 @@
   \fontsize{\fpeval{#1*\PosterFontScale}pt}{\fpeval{#1*#2*\PosterFontScale}pt}\selectfont%
 }
 \newcommand{\PosterNumberFont}{\PosterSetFontRatio{\PosterNumberPt}{1.19}}
-\newcommand{\PosterTitleFont}{\PosterSetFontRatio{\PosterTitlePt}{1.12}\bfseries}
-\newcommand{\PosterPresenterFont}{\PosterSetFontRatio{\PosterPresenterPt}{1.19}\bfseries}
-\newcommand{\PosterCoauthorFont}{\PosterSetFontRatio{\PosterCoauthorPt}{1.24}}
-\newcommand{\PosterAffiliationFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.27}}
+\newcommand{\PosterTitleFont}{\PosterSetFontRatio{\PosterTitlePt}{1.05}\bfseries}
+\newcommand{\PosterPresenterFont}{\PosterSetFontRatio{\PosterPresenterPt}{1.08}\bfseries}
+\newcommand{\PosterCoauthorFont}{\PosterSetFontRatio{\PosterCoauthorPt}{1.10}}
+\newcommand{\PosterAffiliationFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.10}}
 \newcommand{\PosterBlockTitleFont}{\PosterSetFontRatio{\PosterBlockTitlePt}{1.18}\bfseries}
 \newcommand{\PosterBodyFont}{\PosterSetFontRatio{\PosterBodyPt}{1.225}}
 \newcommand{\PosterCaptionFont}{\PosterSetFontRatio{\PosterCaptionPt}{1.22}}
@@ -207,8 +207,12 @@
     \begin{column}{0.225\textwidth}
       \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
         \vspace*{0pt}%
-        {\centering\PosterNumberFont\bfseries\color{white}%
-         Poster No.\ \PosterNumber\par}%
+        {\setlength{\fboxsep}{0pt}%
+         \noindent\colorbox{white}{%
+           \parbox[c][\PosterNumberBoxHeight][c]{\linewidth}{%
+             \centering\PosterNumberFont\bfseries\color{black}%
+             Poster No.\ \PosterNumber\par}%
+         }\par}%
         \vspace{\PosterNumberLogoGap}%
         \noindent\makebox[\linewidth][c]{%
           \IfFileExists{\PosterLogoFile}{%
@@ -221,12 +225,12 @@
     \end{column}
     \begin{column}{0.755\textwidth}
       \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
-        \vspace*{0pt}%
+        \vspace*{-\PosterRightContentRaise}%
         {\centering\PosterTitleFont\color{white}\PosterTitle\par}%
         \vspace{\PosterTitleAuthorGap}%
-        {\centering\PosterPresenterFont\color{white}\PosterPresenter\par}%
+        {\centering\PosterPresenterFont\color{white}\underline{\PosterPresenter}\par}%
         \vspace{\PosterAuthorGap}%
-        {\centering\PosterCoauthorFont\color{white}\PosterCoauthors\par}%
+        {\centering\PosterCoauthorFont\color{white}\textbf{Collaboration with:}\space\PosterCoauthors\par}%
         \vspace{\PosterAffiliationGap}%
         {\centering\PosterAffiliationFont\color{white}\PosterAffiliations\par}%
       \end{minipage}%

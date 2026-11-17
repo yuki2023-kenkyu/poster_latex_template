@@ -87,3 +87,9 @@ A0_Portrait_Poster/
 ## 生成ファイルの配置
 
 `.vscode/settings.json` と `.latexmkrc` はともに `build/` を指定します．VS CodeまたはPowerShellからのビルド結果は `build/main.pdf`，中間ファイルも `build/` に保存します．Git管理対象はソース（図表PDFを含む）だけとします．
+
+## ヘッダとAbstractの微調整（2026-11-18）
+- **主ヘッダ116 mm・Reference帯16 mm・フォントサイズのpt値は変更なし**．2行タイトル時の所属の重なりを避けるため，右側のタイトル・発表者・共同研究者・所属を `\\PosterRightContentRaise` (14 mm) で上に移動し，各行の行送り比率と行間だけを縮小しました．
+- 発表者に下線を追加，共同研究者欄に `Collaboration with:` を表示します．個人名と所属は従来どおり `poster-config.tex` で設定します．
+- ポスター番号は**ロゴ列の幅と等しい白背景のボックス**へ変更し，黒文字・中央揃えにしました．ボックスの高さは `\\PosterNumberBoxHeight` で調整できます．
+- Abstractは `\\PosterAbstractFrameRule` と `\\PosterAbstractFramePadding` に従うnavy枠で囲み，`\\PosterAbstractRaise` (26 mm) により上へ移動しました．他のSectionブロックは変更していません．
