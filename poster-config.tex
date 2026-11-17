@@ -1,0 +1,89 @@
+% =====================================================================
+% User configuration: edit this file, not posterstyle.sty.
+% =====================================================================
+
+% Paper is A0 portrait (841 x 1189 mm), set in main.tex.
+% Color presets: navy | forest | slate (navy approximates the supplied poster)
+\newcommand{\PosterColorTheme}{navy}
+
+% Typography presets: compact (90%), standard (100%), large (110%).
+% In the standard preset, BODY TEXT = 40 pt (at physical poster size).
+\newcommand{\PosterFontLevel}{standard}
+
+% Base font sizes in points (before applying the font-level preset).
+% Body 40 pt is the requested PowerPoint-equivalent size at standard level.
+% You can override individual roles here without changing posterstyle.sty.
+\newcommand{\PosterNumberPt}{26}
+\newcommand{\PosterTitlePt}{58}
+\newcommand{\PosterPresenterPt}{39}
+\newcommand{\PosterCoauthorPt}{31}
+\newcommand{\PosterAffiliationPt}{25}
+\newcommand{\PosterBlockTitlePt}{44}
+\newcommand{\PosterBodyPt}{40}
+\newcommand{\PosterCaptionPt}{32}
+\newcommand{\PosterReferencePt}{27}
+\newcommand{\PosterFooterPt}{22}
+
+% Content: replace these examples with your own information.
+\newcommand{\PosterNumber}{P-001}
+\newcommand{\PosterTitle}{Reconstructing the Cosmic Expansion History}
+\newcommand{\PosterPresenter}{Presenter Name\textsuperscript{1}}
+\newcommand{\PosterCoauthors}{Coauthor One\textsuperscript{1}, Coauthor Two\textsuperscript{2}}
+\newcommand{\PosterAffiliations}{%
+  \textsuperscript{1}Fukushima University\hspace{1.5em}%
+  \textsuperscript{2}Collaborating Institute%
+}
+
+% Replace this file with your own university logo (PDF, PNG, or JPG).
+\newcommand{\PosterLogoFile}{figures/fukushima-university-logo.png}
+
+% Bottom strip. Use empty strings if a field should be omitted.
+\newcommand{\PosterConference}{Conference Name}
+\newcommand{\PosterVenue}{Venue / Session Room}
+\newcommand{\PosterDate}{Month DD, YYYY}
+\newcommand{\PosterContact}{email@example.edu}
+
+% Section style: regular blocks have centered headings and thin horizontal rules.
+% Use `alertblock` for a pale highlighted section, as in the reference poster.
+%
+% Geometry and spacing. Change only when needed.
+\newlength{\PosterMargin}
+\setlength{\PosterMargin}{24mm}
+\newlength{\PosterColumnGap}
+\setlength{\PosterColumnGap}{20mm}
+\newlength{\PosterBlockGap}
+\setlength{\PosterBlockGap}{8mm}
+\newlength{\PosterHeaderGap}
+\setlength{\PosterHeaderGap}{8mm}
+
+% Header/footer bands (A0 portrait); these lengths control strip thickness,
+% while the strip WIDTH remains the full 841 mm page width.
+\newlength{\PosterHeaderBandHeight}
+\setlength{\PosterHeaderBandHeight}{142mm}
+\newlength{\PosterHeaderContentHeight}
+\setlength{\PosterHeaderContentHeight}{107mm}
+\newlength{\PosterFooterBandHeight}
+\setlength{\PosterFooterBandHeight}{28mm}
+
+% Section heading/line/body spacing: shared by regular and highlighted sections.
+% To preserve the same rule-to-text gap in highlighted blocks, keep
+% PosterRuleBodyGap = 2 x PosterHighlightPadding.
+% The title-to-rule distance is measured from the heading's last baseline.
+\newlength{\PosterSectionTopGap}
+\setlength{\PosterSectionTopGap}{2mm}
+\newlength{\PosterTitleRuleGap}
+\setlength{\PosterTitleRuleGap}{3.5mm}
+\newlength{\PosterRuleBodyGap}
+\setlength{\PosterRuleBodyGap}{6mm}
+\newlength{\PosterSectionBottomGap}
+\setlength{\PosterSectionBottomGap}{1mm}
+\newlength{\PosterSectionRuleWidth}
+\setlength{\PosterSectionRuleWidth}{1pt}
+\newlength{\PosterHighlightPadding}
+\setlength{\PosterHighlightPadding}{3mm}
+
+% Logo placement. The poster number is ABOVE the logo in the left header column.
+\newlength{\PosterNumberLogoGap}
+\setlength{\PosterNumberLogoGap}{7mm}
+\newlength{\PosterLogoMaxHeight}
+\setlength{\PosterLogoMaxHeight}{64mm}

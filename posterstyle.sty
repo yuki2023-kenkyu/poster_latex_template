@@ -1,0 +1,230 @@
+% A0 portrait poster style: beamer + beamerposter + biblatex + LuaLaTeX
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{posterstyle}[2026/11/18 Compact A0 portrait poster style]
+\RequirePackage{etoolbox}
+\RequirePackage{xfp}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{fontspec}
+
+% ---- Reproducible, TeX Live-shipped fonts (English only) ----
+% Replace these two lines if your design requires different fonts.
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\usefonttheme{professionalfonts}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ---- Color presets (navy emulates the provided dark header/footer) ----
+\ifdefstring{\PosterColorTheme}{navy}{%
+  \definecolor{PosterAccent}{HTML}{10283D}%
+  \definecolor{PosterAccentPale}{HTML}{FBF1EF}%
+  \definecolor{PosterMuted}{HTML}{687784}%
+}{%
+  \ifdefstring{\PosterColorTheme}{forest}{%
+    \definecolor{PosterAccent}{HTML}{234D45}%
+    \definecolor{PosterAccentPale}{HTML}{EDF4F0}%
+    \definecolor{PosterMuted}{HTML}{667870}%
+  }{%
+    \ifdefstring{\PosterColorTheme}{slate}{%
+      \definecolor{PosterAccent}{HTML}{38465C}%
+      \definecolor{PosterAccentPale}{HTML}{F1F2F5}%
+      \definecolor{PosterMuted}{HTML}{707A88}%
+    }{%
+      \PackageError{posterstyle}{Unknown color theme '\PosterColorTheme'}{Use navy, forest, or slate in poster-config.tex.}%
+    }%
+  }%
+}%
+\definecolor{PosterText}{HTML}{252C34}
+\definecolor{PosterRule}{HTML}{66717A}
+\definecolor{PosterSectionRule}{HTML}{6E777E}
+\definecolor{PosterFigurePale}{HTML}{F6F7F8}
+
+% ---- Font level presets ----
+\ifdefstring{\PosterFontLevel}{compact}{\def\PosterFontScale{0.90}}{%
+  \ifdefstring{\PosterFontLevel}{standard}{\def\PosterFontScale{1.00}}{%
+    \ifdefstring{\PosterFontLevel}{large}{\def\PosterFontScale{1.10}}{%
+      \PackageError{posterstyle}{Unknown font level '\PosterFontLevel'}{Use compact, standard, or large in poster-config.tex.}%
+    }%
+  }%
+}%
+% Values are actual printed points at scale=1.0 in beamerposter.
+% The second argument specifies leading / font size (e.g., 1.225 = 49/40).
+\newcommand{\PosterSetFontRatio}[2]{%
+  \fontsize{\fpeval{#1*\PosterFontScale}pt}{\fpeval{#1*#2*\PosterFontScale}pt}\selectfont%
+}
+\newcommand{\PosterNumberFont}{\PosterSetFontRatio{\PosterNumberPt}{1.19}}
+\newcommand{\PosterTitleFont}{\PosterSetFontRatio{\PosterTitlePt}{1.12}\bfseries}
+\newcommand{\PosterPresenterFont}{\PosterSetFontRatio{\PosterPresenterPt}{1.19}\bfseries}
+\newcommand{\PosterCoauthorFont}{\PosterSetFontRatio{\PosterCoauthorPt}{1.24}}
+\newcommand{\PosterAffiliationFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.27}}
+\newcommand{\PosterBlockTitleFont}{\PosterSetFontRatio{\PosterBlockTitlePt}{1.18}\bfseries}
+\newcommand{\PosterBodyFont}{\PosterSetFontRatio{\PosterBodyPt}{1.225}}
+\newcommand{\PosterCaptionFont}{\PosterSetFontRatio{\PosterCaptionPt}{1.22}}
+\newcommand{\PosterReferenceFont}{\PosterSetFontRatio{\PosterReferencePt}{1.26}}
+\newcommand{\PosterFooterFont}{\PosterSetFontRatio{\PosterFooterPt}{1.25}}
+\newcommand{\PosterPlaceholderFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.20}}
+
+% ---- Beamer typography and section dividers ----
+\setbeamersize{text margin left=\PosterMargin,text margin right=\PosterMargin}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\setbeamercolor{normal text}{fg=PosterText,bg=white}
+\setbeamercolor{block title}{fg=PosterAccent,bg=white}
+\setbeamercolor{block body}{fg=PosterText,bg=white}
+\setbeamercolor{block title alerted}{fg=PosterAccent,bg=PosterAccentPale}
+\setbeamercolor{block body alerted}{fg=PosterText,bg=PosterAccentPale}
+\setbeamercolor{alerted text}{fg=PosterAccent}
+\setbeamerfont{normal text}{size=\PosterBodyFont}
+\setbeamerfont{block title}{size=\PosterBlockTitleFont}
+\setbeamerfont{block body}{size=\PosterBodyFont}
+\setbeamerfont{block title alerted}{size=\PosterBlockTitleFont}
+\setbeamerfont{block body alerted}{size=\PosterBodyFont}
+\setbeamertemplate{itemize item}{\raisebox{0.18ex}{\scriptsize\textbullet}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.24em}
+
+% Shared heading geometry: explicit vertical rule avoids an extra font-sized
+% baseline between the heading and its separator line.
+\newcommand{\PosterHeadingRule}{%
+  \par\vskip\PosterTitleRuleGap
+  {\color{PosterSectionRule}\hrule height \PosterSectionRuleWidth}%
+}
+
+% Regular section: centered heading, subtle rule, body after a measured gap.
+\defbeamertemplate{block begin}{poster-ruled}{%
+  \par\vspace{\PosterSectionTopGap}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block title}%
+    \centering\usebeamerfont{block title}\insertblocktitle\par
+    \PosterHeadingRule
+  \end{beamercolorbox}%
+  \vspace{\PosterRuleBodyGap}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block body}%
+    \usebeamerfont{block body}%
+}
+\defbeamertemplate{block end}{poster-ruled}{%
+  \end{beamercolorbox}%
+  \par\vspace{\PosterSectionBottomGap}%
+}
+\setbeamertemplate{block begin}[poster-ruled]
+\setbeamertemplate{block end}[poster-ruled]
+
+% Highlighted section: same typography/rule geometry, equal inset on
+% heading and body. Two equal-width boxes avoid the staggered edges in v2.
+\defbeamertemplate{block alerted begin}{poster-highlight}{%
+  \par\vspace{\PosterSectionTopGap}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block title alerted}%
+    \centering\usebeamerfont{block title alerted}\insertblocktitle\par
+    \PosterHeadingRule
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block body alerted}%
+    \usebeamerfont{block body alerted}%
+}
+\defbeamertemplate{block alerted end}{poster-highlight}{%
+  \end{beamercolorbox}%
+  \par\vspace{\PosterSectionBottomGap}%
+}
+\setbeamertemplate{block alerted begin}[poster-highlight]
+\setbeamertemplate{block alerted end}[poster-highlight]
+
+% ---- Biblatex: [Surname et al., Journal Volume, EID (Year)] ----
+% Journal italic; volume bold; 'et al.' italic; article title absent.
+% Example: [Aghanim et al., A&A 641, A6 (2020)]
+\DefineBibliographyStrings{english}{%
+  andothers = {{\mkbibemph{et\addabbrvspace al\adddot}}}%
+}
+\DeclareNameFormat{posterfamily}{%
+  \nameparts{#1}%
+  \usebibmacro{name:family}
+    {\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
+  \usebibmacro{name:andothers}%
+}
+\DeclareFieldFormat{posterjournal}{\mkbibemph{#1}}
+\DeclareFieldFormat{postervolume}{\mkbibbold{#1}}
+\DeclareCiteCommand{\posterciteinline}[\mkbibbrackets]
+  {}
+  {\printnames[posterfamily]{labelname}%
+   \setunit{\addcomma\space}%
+   \iffieldundef{shortjournal}
+     {\printfield[posterjournal]{journaltitle}}
+     {\printfield[posterjournal]{shortjournal}}%
+   \setunit{\addspace}%
+   \printfield[postervolume]{volume}%
+   \setunit{\addcomma\space}%
+   \iffieldundef{eid}{\printfield{pages}}{\printfield{eid}}%
+   \setunit{\addspace}%
+   \printtext[parens]{\printfield{year}}%
+  }
+  {\addsemicolon\space}
+  {}
+\newcommand{\postercite}[1]{%
+  \par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}%
+    \posterciteinline{#1}\par
+  \endgroup%
+}
+
+% ---- Compact header: poster number above the logo in LEFT column ----
+% The title/presenter/coauthors/affiliations remain centered in the right
+% column. The navy band still spans the entire page width.
+\newcommand{\PosterHeader}{%
+  \begin{tikzpicture}[remember picture,overlay]%
+    \fill[PosterAccent] (current page.north west) rectangle
+      ([yshift=-\PosterHeaderBandHeight]current page.north east);%
+  \end{tikzpicture}%
+  \begin{columns}[c,totalwidth=\textwidth]
+    \begin{column}{0.225\textwidth}
+      \begin{minipage}[c][\PosterHeaderContentHeight][c]{\linewidth}%
+        {\raggedright\PosterNumberFont\color{white}%
+         Poster No.\ \PosterNumber\par}%
+        \vspace{\PosterNumberLogoGap}%
+        \begin{center}%
+          \IfFileExists{\PosterLogoFile}{%
+            \includegraphics[width=\linewidth,height=\PosterLogoMaxHeight,keepaspectratio]{\PosterLogoFile}%
+          }{%
+            {\color{white}\fbox{\parbox[c][52mm][c]{0.94\linewidth}{\centering University logo}}}%
+          }%
+        \end{center}%
+      \end{minipage}%
+    \end{column}
+    \begin{column}{0.755\textwidth}
+      \begin{minipage}[c][\PosterHeaderContentHeight][c]{\linewidth}%
+        {\centering\PosterTitleFont\color{white}\PosterTitle\par}%
+        \vspace{4mm}%
+        {\centering\PosterPresenterFont\color{white}\PosterPresenter\par}%
+        \vspace{2mm}%
+        {\centering\PosterCoauthorFont\color{white}\PosterCoauthors\par}%
+        \vspace{2.5mm}%
+        {\centering\PosterAffiliationFont\color{white}\PosterAffiliations\par}%
+      \end{minipage}%
+    \end{column}
+  \end{columns}%
+  \vspace{\dimexpr\PosterHeaderBandHeight-\PosterMargin-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
+}
+
+% Fixed footer band. Body remains independent of footer placement.
+\newcommand{\PosterFooter}{%
+  \begin{tikzpicture}[remember picture,overlay]%
+    \fill[PosterAccent] (current page.south west) rectangle
+      ([yshift=\PosterFooterBandHeight]current page.south east);%
+    \node[anchor=south west,inner sep=0pt] at
+      ([xshift=\PosterMargin,yshift=8mm]current page.south west) {%
+      \begin{minipage}{\dimexpr\paperwidth-2\PosterMargin\relax}%
+        {\PosterFooterFont\color{white}%
+          \PosterConference\quad\textbar\quad\PosterVenue\quad\textbar\quad\PosterDate
+          \hfill\PosterContact\par}%
+      \end{minipage}%
+    };%
+  \end{tikzpicture}%
+}
+
+% ---- Generic illustration placeholder; replace it with a real figure ----
+\newcommand{\PosterFigurePlaceholder}[1]{%
+  \par\vspace{3mm}
+  \noindent\fcolorbox{PosterRule}{PosterFigurePale}{%
+    \parbox[c][145mm][c]{\dimexpr0.91\linewidth-2\fboxsep-2\fboxrule\relax}{%
+      \centering\PosterPlaceholderFont\color{PosterMuted}#1%
+    }%
+  }%
+  \par\vspace{5mm}
+}

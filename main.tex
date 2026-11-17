@@ -1,0 +1,55 @@
+% !TeX program = lualatex
+% !BIB program = biber
+% A0 portrait scientific poster. Build from the project root: latexmk main.tex
+\documentclass[final]{beamer}
+\usepackage[size=a0,orientation=portrait,scale=1.0]{beamerposter}
+
+% Change colors, font levels, header content, and footer in this file.
+\input{poster-config.tex}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  sorting=none,
+  maxcitenames=1,
+  mincitenames=1,
+  uniquename=false,
+  uniquelist=false,
+  doi=false,
+  url=false,
+  isbn=false,
+  eprint=false
+]{biblatex}
+\addbibresource{references.bib}
+\usepackage{posterstyle}
+
+\begin{document}
+\begin{frame}[t]
+\vspace*{\PosterMargin}
+\PosterHeader
+
+% One-column abstract (full width).
+\input{documents/abstract.tex}
+\vspace{\PosterBlockGap}
+
+% Two-column body. Each section is maintained in its own .tex file.
+\begin{columns}[t,totalwidth=\dimexpr\textwidth+8pt\relax]
+  \begin{column}{\dimexpr(\textwidth-\PosterColumnGap)/2\relax}
+    \input{documents/background.tex}
+    \vspace{\PosterBlockGap}
+    \input{documents/methods.tex}
+  \end{column}
+  \hspace{\PosterColumnGap}
+  \begin{column}{\dimexpr(\textwidth-\PosterColumnGap)/2\relax}
+    \input{documents/results.tex}
+    \vspace{\PosterBlockGap}
+    \input{documents/conclusions.tex}
+  \end{column}
+\end{columns}
+
+% The footer is fixed to the page bottom; avoid body text overlapping it.
+\PosterFooter
+\end{frame}
+\end{document}
