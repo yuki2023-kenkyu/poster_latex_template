@@ -54,7 +54,7 @@ A0_Portrait_Poster/
 
 - A0縦長（841 × 1189 mm），**主ヘッダ116 mm**，Reference帯16 mm，フッタ28 mm．
 - 主ヘッダ全域を濃紺に統一．左約23%のロゴ領域で**ポスター番号を中央揃え**，右約77%にタイトル・著者・所属を中央揃え．ヘッダ内の文字・ロゴは上端寄せ．
-- 番号43 pt，タイトル58 pt，発表者46 pt，共著者36 pt，所属32 pt，本文40 pt（標準レベル）．色・サイズ・間隔は `poster-config.tex` で変更可能．
+- 番号51 pt，タイトル58 pt，発表者46 pt，共著者46 pt，所属40 pt，本文40 pt（標準レベル）．色・サイズ・間隔は `poster-config.tex` で変更可能．
 - Reference帯は**淡い紺色**．この帯では引用全体の角括弧を省略し，`.bib` の `author`・`shortjournal`/`journaltitle`・`volume`・`eid`/`pages`・`year`・`archivePrefix`・`eprint` から生成します．例：`Reference: Yuki Hashimoto, Kazuharu Bamba, and Sanjay Mandal, JCAP 09, 146 (2026) [arXiv:2604.22372].` 著者は名→姓ですべて表示し，雑誌名はイタリック，巻は太字，末尾にはピリオドを付けます．`eprint` がなければ識別子部分は省略します．本文内の引用は従来どおり短縮形・角括弧付きです．本文内の `\\postercite{...}` は従来どおり角括弧付き．
 - 従来の2段組，Section見出し・区切り線，`documents/*.tex` の分割管理は維持．主要文献 `Hashimoto:2026zcr` と `references.bib` の既存エントリを保持．
 
@@ -100,3 +100,12 @@ A0_Portrait_Poster/
 - PowerShell（プロジェクトルート）では `latexmk -cd -lualatex -outdir=build main.tex`．正常ならPDFと補助ファイルは `build/` に作成されます．
 - `build/main.log` 内の `Output written on main.pdf` だけではルート直下に生成されたとは判定できません．`build/main.pdf` の実在と更新日時を確認します．
 - 以前のビルドでルートに残っている `main.aux` や `main.log` は自動移動されません．不要と確認してから削除してください．
+
+## 表示切替・Figure・ビルドの設定（2026-11-18）
+
+- **Poster No.**: `poster-config.tex` の `\PosterShowNumbertrue` / `\PosterShowNumberfalse` で切り替えます．非表示の場合は白いボックスごと消し，navy領域左側で大学ロゴが上下左右中央に位置します．表示の場合，白い番号ボックスの下端はそのままで上端を12 mm延長します．
+- **Reference**: `\PosterShowReferencetrue` / `\PosterShowReferencefalse` を切り替えます．非表示ならReference帯を消し，Abstract以降の本文を**16 mm**上に移動します．主ヘッダとフッタ位置は不変です．番号表示とは独立しています．
+- **Affiliations**: 全員同一所属なら `\PosterMultipleAffiliationsfalse` とし，上付き番号を省略します．複数所属なら `\PosterMultipleAffiliationstrue` にして，`\PosterAffiliationMark{1}` などで著者・所属を対応付けます．
+- **Abstract**: `documents/abstract.tex` に本文だけを記述します．`main.tex` 側のnavyの枠線は残し，Section名と区切り線は表示しません．
+- **Figures**: Beamerの標準 `figure`，`\centering`，`\includegraphics`，`\caption` を使用します．番号付きキャプションはBeamer標準設定です．
+- **VS Code**: ワークスペースの `settings.json` で最初のlatexmkレシピを標準指定し，magic commentビルドと外部ビルドコマンドを無効化しています．通常のLaTeX Workshopビルドは `build/` に出力します．手動の `lualatex` や別の拡張機能によるコンパイルまでは制御しません．

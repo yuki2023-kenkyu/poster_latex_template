@@ -70,6 +70,11 @@
 % ---- Beamer typography and section dividers ----
 \setbeamersize{text margin left=\PosterMargin,text margin right=\PosterMargin}
 \setbeamertemplate{navigation symbols}{}
+% Native Beamer figure captions; use \centering inside each figure.
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\PosterCaptionFont}
+\setbeamercolor{caption}{fg=PosterMuted}
+\setbeamercolor{caption name}{fg=PosterMuted}
 \setbeamertemplate{headline}{}
 \setbeamertemplate{footline}{}
 \setbeamercolor{normal text}{fg=PosterText,bg=white}
@@ -199,32 +204,48 @@
 % Retain the old interface for existing section files.
 \let\postercite\cite
 
-% ---- Compact, top-aligned navy header and pale-navy Reference strip ----
+% ---- Tight navy header, number/Reference optional ----
+\newcommand{\PosterHeaderLogo}[1]{%
+  \IfFileExists{\PosterLogoFile}{%
+    \includegraphics[width=#1,height=\PosterLogoMaxHeight,keepaspectratio]{\PosterLogoFile}%
+  }{%
+    {\color{white}\fbox{\parbox[c][50mm][c]{#1}{\centering University logo}}}%
+  }%
+}
 \newcommand{\PosterHeader}{%
   \begin{tikzpicture}[remember picture,overlay]%
     \fill[PosterAccent] (current page.north west) rectangle
       ([yshift=-\PosterHeaderMainHeight]current page.north east);%
-    \fill[PosterFeaturedBand] ([yshift=-\PosterHeaderMainHeight]current page.north west) rectangle
-      ([yshift=-\PosterHeaderBandHeight]current page.north east);%
+    \ifPosterShowReference
+      \fill[PosterFeaturedBand] ([yshift=-\PosterHeaderMainHeight]current page.north west) rectangle
+        ([yshift=-\PosterHeaderBandHeight]current page.north east);%
+    \fi
+    \ifPosterShowNumber\else
+      % With number hidden, center the logo in the left navy header region.
+      \node[anchor=center,inner sep=0pt] at
+        ([xshift=\dimexpr\PosterMargin+0.1125\textwidth\relax,
+          yshift=-0.5\PosterHeaderMainHeight]current page.north west) {%
+        \PosterHeaderLogo{0.225\textwidth}%
+      };%
+    \fi
   \end{tikzpicture}%
   \begin{columns}[t,totalwidth=\textwidth]
     \begin{column}{0.225\textwidth}
       \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
-        \vspace*{0pt}%
-        {\setlength{\fboxsep}{0pt}%
-         \noindent\colorbox{white}{%
-           \parbox[c][\PosterNumberBoxHeight][c]{\linewidth}{%
-             \centering\PosterNumberFont\bfseries\color{black}%
-             Poster No.\ \PosterNumber\par}%
-         }\par}%
-        \vspace{\PosterNumberLogoGap}%
-        \noindent\makebox[\linewidth][c]{%
-          \IfFileExists{\PosterLogoFile}{%
-            \includegraphics[width=\linewidth,height=\PosterLogoMaxHeight,keepaspectratio]{\PosterLogoFile}%
-          }{%
-            {\color{white}\fbox{\parbox[c][50mm][c]{0.94\linewidth}{\centering University logo}}}%
-          }%
-        }%
+        \ifPosterShowNumber
+          \vspace*{-\PosterNumberBoxGrow}%
+          {\setlength{\fboxsep}{0pt}%
+           \noindent\colorbox{white}{%
+             \parbox[c][\dimexpr\PosterNumberBoxHeight+\PosterNumberBoxGrow\relax][c]{\linewidth}{%
+               \centering\PosterNumberFont\bfseries\color{black}%
+               Poster No.\ \PosterNumber\par}%
+           }\par}%
+          \vspace{\PosterNumberLogoGap}%
+          \noindent\makebox[\linewidth][c]{\PosterHeaderLogo{\linewidth}}%
+        \else
+          % Only the centered overlay logo is rendered.
+          \null
+        \fi
       \end{minipage}%
     \end{column}
     \begin{column}{0.755\textwidth}
@@ -240,15 +261,23 @@
       \end{minipage}%
     \end{column}
   \end{columns}%
+  % The tikzpicture itself is kept in both states to preserve baseline
+  % geometry; hiding the reference shifts the body by exactly the strip height.
   \begin{tikzpicture}[remember picture,overlay]%
-    \node[anchor=center,inner sep=0pt,text=PosterAccent] at
-      ([yshift=-\PosterFeaturedPaperCenterDepth]current page.north) {%
-      \parbox{\dimexpr\paperwidth-2\PosterMargin\relax}{%
-        \centering\PosterFeaturedPaperFont
-        \PosterFeaturedPaperLabel\space\postercitebare{\PosterFeaturedPaperKey}.\par}%
-    };%
+    \ifPosterShowReference
+      \node[anchor=center,inner sep=0pt,text=PosterAccent] at
+        ([yshift=-\PosterFeaturedPaperCenterDepth]current page.north) {%
+        \parbox{\dimexpr\paperwidth-2\PosterMargin\relax}{%
+          \centering\PosterFeaturedPaperFont
+          \PosterFeaturedPaperLabel\space\postercitebare{\PosterFeaturedPaperKey}.\par}%
+      };%
+    \fi
   \end{tikzpicture}%
-  \vspace{\dimexpr\PosterHeaderBandHeight-\PosterHeaderTopInset-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
+  \ifPosterShowReference
+    \vspace{\dimexpr\PosterHeaderBandHeight-\PosterHeaderTopInset-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
+  \else
+    \vspace{\dimexpr\PosterHeaderMainHeight-\PosterHeaderTopInset-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
+  \fi
 }
 
 % Fixed footer band. Body remains independent of footer placement.

@@ -2,6 +2,16 @@
 \begin{block}{2. Data and Methods}
 Describe observational samples, theoretical models, mathematical definitions,
 and the methods used to evaluate uncertainties.
-\PosterFigurePlaceholder{Place a method figure here}
-{\PosterCaptionFont\color{PosterMuted}Figure 1. Replace with the actual figure and caption.\par}
+\begin{figure}
+  \centering
+  % Replace this temporary box with \includegraphics[width=.9\linewidth]{figures/plot.pdf}
+  \setlength{\fboxsep}{0pt}%
+  \fcolorbox{PosterRule}{PosterFigurePale}{%
+    \parbox[c][125mm][c]{0.90\linewidth}{%
+      \centering\PosterPlaceholderFont\color{PosterMuted}
+      Replace with \texttt{\textbackslash includegraphics}%
+    }%
+  }
+  \caption{Replace with the actual method figure and caption.}
+\end{figure}
 \end{block}

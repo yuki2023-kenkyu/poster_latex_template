@@ -1,6 +1,5 @@
-% !TeX program = lualatex
-% !BIB program = biber
-% A0 portrait scientific poster. Build from the project root: latexmk main.tex
+% A0 portrait scientific poster; use the VS Code workspace latexmk recipe.
+% From project root: latexmk -cd -lualatex -outdir=build main.tex
 \documentclass[final]{beamer}
 \usepackage[size=a0,orientation=portrait,scale=1.0]{beamerposter}
 
@@ -37,7 +36,7 @@
   \setlength{\fboxrule}{\PosterAbstractFrameRule}%
   \noindent\fcolorbox{PosterAccent}{white}{%
     \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
-      \input{documents/abstract.tex}%
+      \PosterBodyFont\input{documents/abstract.tex}\par%
     \end{minipage}%
   }%
   \par
