@@ -18,8 +18,8 @@
 % ---- Color presets (navy emulates the provided dark header/footer) ----
 \ifdefstring{\PosterColorTheme}{navy}{%
   \definecolor{PosterAccent}{HTML}{10283D}%
-  \definecolor{PosterAccentPale}{HTML}{FBF1EF}%
-  \definecolor{PosterMuted}{HTML}{687784}%
+  \definecolor{PosterAccentPale}{HTML}{E9EFF5}%
+  \definecolor{PosterMuted}{HTML}{617487}%
 }{%
   \ifdefstring{\PosterColorTheme}{forest}{%
     \definecolor{PosterAccent}{HTML}{234D45}%
@@ -38,7 +38,7 @@
 \definecolor{PosterText}{HTML}{252C34}
 \definecolor{PosterRule}{HTML}{66717A}
 \colorlet{PosterSectionRule}{PosterAccent}% Consistent regular/alert section dividers
-\definecolor{PosterFeaturedBand}{HTML}{205A92}% Dedicated slim publication bar
+\definecolor{PosterFeaturedBand}{HTML}{DFE9F3}% Pale navy publication strip
 \definecolor{PosterFigurePale}{HTML}{F6F7F8}
 
 % ---- Font level presets ----
@@ -130,9 +130,8 @@
 \setbeamertemplate{block alerted begin}[poster-highlight]
 \setbeamertemplate{block alerted end}[poster-highlight]
 
-% ---- Biblatex: [Surname et al., Journal Volume, EID (Year)] ----
-% Journal italic; volume bold; 'et al.' italic; article title absent.
-% Example: [Aghanim et al., A&A 641, A6 (2020)]
+% ---- Biblatex citation style: italic journal and et al.; bold volume ----
+% The featured Reference strip is unbracketed. In-section citations keep [].
 \DefineBibliographyStrings{english}{%
   andothers = {{\mkbibemph{et\addabbrvspace al\adddot}}}%
 }
@@ -144,79 +143,76 @@
 }
 \DeclareFieldFormat{posterjournal}{\mkbibemph{#1}}
 \DeclareFieldFormat{postervolume}{\mkbibbold{#1}}
+\DeclareFieldFormat{posterpages}{#1}% No page prefix for poster citations.
+\newbibmacro*{poster:publication}{%
+  \printnames[posterfamily]{labelname}%
+  \setunit{\addcomma\space}%
+  \iffieldundef{shortjournal}
+    {\printfield[posterjournal]{journaltitle}}
+    {\printfield[posterjournal]{shortjournal}}%
+  \setunit{\addspace}%
+  \printfield[postervolume]{volume}%
+  \setunit{\addcomma\space}%
+  \iffieldundef{eid}{\printfield[posterpages]{pages}}{\printfield{eid}}%
+  \setunit{\addspace}%
+  \printtext[parens]{\printfield{year}}%
+}
 \DeclareCiteCommand{\posterciteinline}[\mkbibbrackets]
-  {}
-  {\printnames[posterfamily]{labelname}%
-   \setunit{\addcomma\space}%
-   \iffieldundef{shortjournal}
-     {\printfield[posterjournal]{journaltitle}}
-     {\printfield[posterjournal]{shortjournal}}%
-   \setunit{\addspace}%
-   \printfield[postervolume]{volume}%
-   \setunit{\addcomma\space}%
-   \iffieldundef{eid}{\printfield{pages}}{\printfield{eid}}%
-   \setunit{\addspace}%
-   \printtext[parens]{\printfield{year}}%
-  }
-  {\addsemicolon\space}
-  {}
+  {} {\usebibmacro{poster:publication}} {\addsemicolon\space} {}
+\DeclareCiteCommand{\postercitebare}
+  {} {\usebibmacro{poster:publication}} {\addsemicolon\space} {}
 \newcommand{\postercite}[1]{%
   \par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}%
     \posterciteinline{#1}\par
   \endgroup%
 }
 
-% ---- Photo-proportioned header: light 23% logo zone, dark 77% title zone. ----
-% This follows the reference image in relative placement and vertical hierarchy;
-% colors remain controlled by the configured theme. The featured-paper strip
-% spans the whole page directly below the two-column header.
+% ---- Compact, top-aligned navy header and pale-navy Reference strip ----
 \newcommand{\PosterHeader}{%
   \begin{tikzpicture}[remember picture,overlay]%
     \fill[PosterAccent] (current page.north west) rectangle
       ([yshift=-\PosterHeaderMainHeight]current page.north east);%
-    \fill[white] (current page.north west) rectangle
-      ([xshift=.245\paperwidth,yshift=-\PosterHeaderMainHeight]current page.north west);%
     \fill[PosterFeaturedBand] ([yshift=-\PosterHeaderMainHeight]current page.north west) rectangle
       ([yshift=-\PosterHeaderBandHeight]current page.north east);%
   \end{tikzpicture}%
-  \begin{columns}[c,totalwidth=\textwidth]
+  \begin{columns}[t,totalwidth=\textwidth]
     \begin{column}{0.225\textwidth}
-      \begin{minipage}[c][\PosterHeaderContentHeight][c]{\linewidth}%
-        {\raggedright\PosterNumberFont\color{PosterAccent}%
+      \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
+        \vspace*{0pt}%
+        {\centering\PosterNumberFont\bfseries\color{white}%
          Poster No.\ \PosterNumber\par}%
         \vspace{\PosterNumberLogoGap}%
-        \begin{center}%
+        \noindent\makebox[\linewidth][c]{%
           \IfFileExists{\PosterLogoFile}{%
             \includegraphics[width=\linewidth,height=\PosterLogoMaxHeight,keepaspectratio]{\PosterLogoFile}%
           }{%
-            {\color{PosterAccent}\fbox{\parbox[c][52mm][c]{0.94\linewidth}{\centering University logo}}}%
+            {\color{white}\fbox{\parbox[c][50mm][c]{0.94\linewidth}{\centering University logo}}}%
           }%
-        \end{center}%
+        }%
       \end{minipage}%
     \end{column}
     \begin{column}{0.755\textwidth}
-      \begin{minipage}[c][\PosterHeaderContentHeight][c]{\linewidth}%
+      \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
+        \vspace*{0pt}%
         {\centering\PosterTitleFont\color{white}\PosterTitle\par}%
-        \vspace{4mm}%
+        \vspace{\PosterTitleAuthorGap}%
         {\centering\PosterPresenterFont\color{white}\PosterPresenter\par}%
-        \vspace{2mm}%
+        \vspace{\PosterAuthorGap}%
         {\centering\PosterCoauthorFont\color{white}\PosterCoauthors\par}%
-        \vspace{2.5mm}%
+        \vspace{\PosterAffiliationGap}%
         {\centering\PosterAffiliationFont\color{white}\PosterAffiliations\par}%
       \end{minipage}%
     \end{column}
   \end{columns}%
-  % The reference strip has an independent fixed height, not part of the
-  % author/title text box. Cite the key supplied in poster-config.tex.
   \begin{tikzpicture}[remember picture,overlay]%
-    \node[anchor=center,inner sep=0pt,text=white] at
+    \node[anchor=center,inner sep=0pt,text=PosterAccent] at
       ([yshift=-\PosterFeaturedPaperCenterDepth]current page.north) {%
       \parbox{\dimexpr\paperwidth-2\PosterMargin\relax}{%
         \centering\PosterFeaturedPaperFont
-        \PosterFeaturedPaperLabel\space\posterciteinline{\PosterFeaturedPaperKey}\par}%
+        \PosterFeaturedPaperLabel\space\postercitebare{\PosterFeaturedPaperKey}\par}%
     };%
   \end{tikzpicture}%
-  \vspace{\dimexpr\PosterHeaderBandHeight-\PosterMargin-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
+  \vspace{\dimexpr\PosterHeaderBandHeight-\PosterHeaderTopInset-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
 }
 
 % Fixed footer band. Body remains independent of footer placement.

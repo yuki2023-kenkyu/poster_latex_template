@@ -15,3 +15,6 @@
 *.toc
 *.xdv
 # Keep source PDFs/figures tracked; do not blanket-ignore *.pdf.
+
+# Old PDF was tracked at repository root; only build/ receives generated output.
+/main.pdf

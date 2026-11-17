@@ -13,16 +13,16 @@
 % Base font sizes in points (before applying the font-level preset).
 % Body 40 pt is the requested PowerPoint-equivalent size at standard level.
 % You can override individual roles here without changing posterstyle.sty.
-\newcommand{\PosterNumberPt}{30}
+\newcommand{\PosterNumberPt}{43}
 \newcommand{\PosterTitlePt}{58}
-\newcommand{\PosterPresenterPt}{39}
-\newcommand{\PosterCoauthorPt}{27}
-\newcommand{\PosterAffiliationPt}{24}
+\newcommand{\PosterPresenterPt}{46}
+\newcommand{\PosterCoauthorPt}{36}
+\newcommand{\PosterAffiliationPt}{32}
 \newcommand{\PosterBlockTitlePt}{44}
 \newcommand{\PosterBodyPt}{40}
 \newcommand{\PosterCaptionPt}{32}
 \newcommand{\PosterReferencePt}{27}
-\newcommand{\PosterFeaturedPaperPt}{24}
+\newcommand{\PosterFeaturedPaperPt}{25}
 \newcommand{\PosterFooterPt}{22}
 
 % Content: replace these examples with your own information.
@@ -62,18 +62,26 @@
 \newlength{\PosterHeaderGap}
 \setlength{\PosterHeaderGap}{8mm}
 
-% Header: two-level photo-inspired composition (main header + slim paper bar).
-% The paper strip is directly beneath the title/presenter/coauthor/affiliation row.
+% Tight navy header (main header + pale navy Reference strip).
+% Publication reference appears immediately below the main header.
+\newlength{\PosterHeaderTopInset}
+\setlength{\PosterHeaderTopInset}{7mm}
 \newlength{\PosterHeaderMainHeight}
-\setlength{\PosterHeaderMainHeight}{150mm}
+\setlength{\PosterHeaderMainHeight}{116mm}
 \newlength{\PosterFeaturedPaperBandHeight}
-\setlength{\PosterFeaturedPaperBandHeight}{18mm}
+\setlength{\PosterFeaturedPaperBandHeight}{16mm}
 \newlength{\PosterHeaderBandHeight}
 \setlength{\PosterHeaderBandHeight}{\dimexpr\PosterHeaderMainHeight+\PosterFeaturedPaperBandHeight\relax}
 \newlength{\PosterFeaturedPaperCenterDepth}
 \setlength{\PosterFeaturedPaperCenterDepth}{\dimexpr\PosterHeaderMainHeight+\PosterFeaturedPaperBandHeight/2\relax}
 \newlength{\PosterHeaderContentHeight}
-\setlength{\PosterHeaderContentHeight}{125mm}
+\setlength{\PosterHeaderContentHeight}{105mm}
+\newlength{\PosterTitleAuthorGap}
+\setlength{\PosterTitleAuthorGap}{3mm}
+\newlength{\PosterAuthorGap}
+\setlength{\PosterAuthorGap}{1.5mm}
+\newlength{\PosterAffiliationGap}
+\setlength{\PosterAffiliationGap}{1.5mm}
 \newlength{\PosterFooterBandHeight}
 \setlength{\PosterFooterBandHeight}{28mm}
 
@@ -94,8 +102,8 @@
 \newlength{\PosterHighlightPadding}
 \setlength{\PosterHighlightPadding}{3mm}
 
-% Poster number above the logo in a light left column (about 23% of the page).
+% Poster number is centered directly above the logo on a solid navy background.
 \newlength{\PosterNumberLogoGap}
-\setlength{\PosterNumberLogoGap}{11mm}
+\setlength{\PosterNumberLogoGap}{5mm}
 \newlength{\PosterLogoMaxHeight}
-\setlength{\PosterLogoMaxHeight}{70mm}
+\setlength{\PosterLogoMaxHeight}{73mm}
