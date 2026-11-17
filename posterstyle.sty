@@ -37,7 +37,8 @@
 }%
 \definecolor{PosterText}{HTML}{252C34}
 \definecolor{PosterRule}{HTML}{66717A}
-\definecolor{PosterSectionRule}{HTML}{6E777E}
+\colorlet{PosterSectionRule}{PosterAccent}% Consistent regular/alert section dividers
+\definecolor{PosterFeaturedBand}{HTML}{205A92}% Dedicated slim publication bar
 \definecolor{PosterFigurePale}{HTML}{F6F7F8}
 
 % ---- Font level presets ----
@@ -62,6 +63,7 @@
 \newcommand{\PosterBodyFont}{\PosterSetFontRatio{\PosterBodyPt}{1.225}}
 \newcommand{\PosterCaptionFont}{\PosterSetFontRatio{\PosterCaptionPt}{1.22}}
 \newcommand{\PosterReferenceFont}{\PosterSetFontRatio{\PosterReferencePt}{1.26}}
+\newcommand{\PosterFeaturedPaperFont}{\PosterSetFontRatio{\PosterFeaturedPaperPt}{1.20}}
 \newcommand{\PosterFooterFont}{\PosterSetFontRatio{\PosterFooterPt}{1.25}}
 \newcommand{\PosterPlaceholderFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.20}}
 
@@ -164,25 +166,30 @@
   \endgroup%
 }
 
-% ---- Compact header: poster number above the logo in LEFT column ----
-% The title/presenter/coauthors/affiliations remain centered in the right
-% column. The navy band still spans the entire page width.
+% ---- Photo-proportioned header: light 23% logo zone, dark 77% title zone. ----
+% This follows the reference image in relative placement and vertical hierarchy;
+% colors remain controlled by the configured theme. The featured-paper strip
+% spans the whole page directly below the two-column header.
 \newcommand{\PosterHeader}{%
   \begin{tikzpicture}[remember picture,overlay]%
     \fill[PosterAccent] (current page.north west) rectangle
+      ([yshift=-\PosterHeaderMainHeight]current page.north east);%
+    \fill[white] (current page.north west) rectangle
+      ([xshift=.245\paperwidth,yshift=-\PosterHeaderMainHeight]current page.north west);%
+    \fill[PosterFeaturedBand] ([yshift=-\PosterHeaderMainHeight]current page.north west) rectangle
       ([yshift=-\PosterHeaderBandHeight]current page.north east);%
   \end{tikzpicture}%
   \begin{columns}[c,totalwidth=\textwidth]
     \begin{column}{0.225\textwidth}
       \begin{minipage}[c][\PosterHeaderContentHeight][c]{\linewidth}%
-        {\raggedright\PosterNumberFont\color{white}%
+        {\raggedright\PosterNumberFont\color{PosterAccent}%
          Poster No.\ \PosterNumber\par}%
         \vspace{\PosterNumberLogoGap}%
         \begin{center}%
           \IfFileExists{\PosterLogoFile}{%
             \includegraphics[width=\linewidth,height=\PosterLogoMaxHeight,keepaspectratio]{\PosterLogoFile}%
           }{%
-            {\color{white}\fbox{\parbox[c][52mm][c]{0.94\linewidth}{\centering University logo}}}%
+            {\color{PosterAccent}\fbox{\parbox[c][52mm][c]{0.94\linewidth}{\centering University logo}}}%
           }%
         \end{center}%
       \end{minipage}%
@@ -199,6 +206,16 @@
       \end{minipage}%
     \end{column}
   \end{columns}%
+  % The reference strip has an independent fixed height, not part of the
+  % author/title text box. Cite the key supplied in poster-config.tex.
+  \begin{tikzpicture}[remember picture,overlay]%
+    \node[anchor=center,inner sep=0pt,text=white] at
+      ([yshift=-\PosterFeaturedPaperCenterDepth]current page.north) {%
+      \parbox{\dimexpr\paperwidth-2\PosterMargin\relax}{%
+        \centering\PosterFeaturedPaperFont
+        \PosterFeaturedPaperLabel\space\posterciteinline{\PosterFeaturedPaperKey}\par}%
+    };%
+  \end{tikzpicture}%
   \vspace{\dimexpr\PosterHeaderBandHeight-\PosterMargin-\PosterHeaderContentHeight+\PosterHeaderGap\relax}%
 }
 
