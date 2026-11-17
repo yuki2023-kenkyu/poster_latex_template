@@ -34,8 +34,6 @@ A0_Portrait_Poster/
 ├── references.bib             # Biber用文献データ
 ├── .latexmkrc                 # Windows対応latexmk設定
 ├── .gitignore
-├── .gitattributes
-├── .editorconfig
 ├── .vscode/
 │   ├── settings.json
 │   └── extensions.json
@@ -44,11 +42,10 @@ A0_Portrait_Poster/
 │   ├── background.tex         # 左カラム
 │   ├── methods.tex            # 左カラム
 │   ├── results.tex            # 右カラム，淡色強調
-│   ├── conclusions.tex        # 右カラム
-│   └── README.md
-└── figures/
-    ├── fukushima-university-logo.png  # 添付ロゴ
-    └── README.md
+│   └── conclusions.tex        # 右カラム
+├── logos/
+│   └── fukushima-university-logo.png  # 大学ロゴ
+└── build/                    # コンパイル時に生成（Git管理外）
 ```
 
 `build/` はコンパイル時に生成され，`.gitignore` で除外されます．既にリポジトリにあるルート直下の `main.pdf` はビルド生成物と区別してください．
@@ -68,7 +65,7 @@ A0_Portrait_Poster/
 2. **文字サイズ**：`\PosterFontLevel` は `compact`（36 pt），`standard`（40 pt），`large`（44 pt）．`\PosterTitlePt`，`\PosterBlockTitlePt` 等は同じ設定ファイル内で個別変更できます．
 3. **タイトル・著者・主要論文**：`poster-config.tex`．ポスター番号は左側の明るい領域で大学ロゴの上，タイトルと著者・所属は右側の暗い領域で中央揃えです．その下の主要論文帯には `\\PosterFeaturedPaperKey` で指定した文献を表示します．
 4. **本文**：`documents/*.tex`．**新しいセクションを追加した場合だけ**，`main.tex` の該当するカラム内に `\input{documents/new-section.tex}` を追加します．
-5. **図**：`figures/` に配置し，たとえば `\includegraphics[width=\linewidth]{figures/myplot.pdf}`．TeXの相対パスは常にルートの `main.tex` 基準です．
+5. **図**：必要に応じて `figures/` を作成して配置し，たとえば `\includegraphics[width=\linewidth]{figures/myplot.pdf}`．TeXの相対パスは常にルートの `main.tex` 基準です．
 6. **セクション区切り**：`block` = 白地＋中央タイトル＋水平線，`alertblock` = 淡色背景の同形式．アクセント色はテーマで連動します．
 7. **フッタ**：学会名・会場・日付・連絡先を `poster-config.tex` で設定．
 
