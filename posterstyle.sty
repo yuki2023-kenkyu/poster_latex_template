@@ -7,6 +7,8 @@
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
 \RequirePackage{fontspec}
+% Standard \label entries are recorded for \zcref by zref-clever's label hook.
+\RequirePackage{zref-clever}
 
 % ---- Reproducible, TeX Live-shipped fonts (English only) ----
 % Replace these two lines if your design requires different fonts.
@@ -109,6 +111,8 @@
 % Beamer's \section is for slide navigation, so keep a dedicated poster counter.
 \newcounter{postersection}
 \renewcommand{\thepostersection}{\Roman{postersection}}
+% Map the custom Beamer poster counter to the built-in section reference type.
+\zcsetup{cap,countertype={postersection=section}}
 \newenvironment{posterblock}[1]{%
   \refstepcounter{postersection}%
   \begin{block}{\thepostersection.\ #1}%

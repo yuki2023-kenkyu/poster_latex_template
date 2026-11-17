@@ -118,3 +118,42 @@ A0_Portrait_Poster/
 - TableはAPSの[Style Basics](https://journals.aps.org/authors/style-basics)に基づき，**TABLE I.** の大文字ローマ数字，表の上の `\\caption`，見出し下の1本の水平線，縦罫線なし，単位を付した列名を標準の `table`・`tabular`・`\\hline` で表現します．`documents/results.tex` は測定値ではない例示データを使用しています．
 - 図と表のキャプションは同じBeamerの標準 `\\caption` を使い，列幅内で中央揃えします．TableとFigureの番号カウンタは独立しています．
 - ポスター形式の例示であり，PRD誌面そのもののREVTeXクラスへ変更したわけではありません．
+
+## zref-clever による相互参照（2026-11-18）
+
+通常の `\label{...}` と `\zcref{...}` を使用します．追加の独自参照マクロはありません．
+`postersection` カウンタを `section` 型へ対応付けたため，`Section I`，`Section II` と自動表示されます．FigureとTableの参照はそれぞれ `Figure 1`，`Table I` です．
+
+```latex
+\begin{posterblock}{Background and Motivation}
+\label{sec:background}
+See \zcref{sec:methods}.
+\end{posterblock}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.85\linewidth]{figures/example.pdf}
+  \caption{Illustrative figure.}
+  \label{fig:example}
+\end{figure}
+
+\begin{table}
+  \centering
+  \caption{Illustrative values.}
+  \label{tab:example}
+  \begin{tabular}{lc}
+    \hline
+    Quantity & Value \\
+    \hline
+    $z$ & 0.2 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Results are shown in \zcref{fig:example,tab:example}.
+```
+
+Sectionラベルは環境開始直後，Figure/Tableラベルは `\caption` の直後に置きます．
+数式には `\begin{equation}\label{eq:name}...\end{equation}` と `\zcref{eq:name}` を使用できます．
+前方参照は `latexmk` が必要に応じて再実行し解決します．
+TeX Live 2025 の `zref-clever` で動作確認しています．
