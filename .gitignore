@@ -1,0 +1,17 @@
+# LuaLaTeX/latexmk output (generated; do not commit)
+/build/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.xdv
+# Keep source PDFs/figures tracked; do not blanket-ignore *.pdf.
