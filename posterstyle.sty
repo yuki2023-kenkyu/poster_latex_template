@@ -189,11 +189,15 @@
 }
 \DeclareCiteCommand{\postercitebare}
   {} {\usebibmacro{poster:publication-full}} {\addsemicolon\space} {}
-\newcommand{\postercite}[1]{%
-  \par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}%
-    \posterciteinline{#1}\par
-  \endgroup%
-}
+% Standard \cite{key} provides VS Code bibliography-key completion.
+% The output matches the former \postercite: separate, right-aligned and muted.
+\DeclareCiteCommand{\cite}
+  {\par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}[}
+  {\usebibmacro{poster:publication}}
+  {\addsemicolon\space}
+  {]\par\endgroup}
+% Retain the old interface for existing section files.
+\let\postercite\cite
 
 % ---- Compact, top-aligned navy header and pale-navy Reference strip ----
 \newcommand{\PosterHeader}{%
