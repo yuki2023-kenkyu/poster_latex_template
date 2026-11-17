@@ -5,7 +5,9 @@
   "latex-workshop.latex.recipes": [
     {
       "name": "latexmk (LuaLaTeX + Biber)",
-      "tools": ["latexmk-lua"]
+      "tools": [
+        "latexmk-lua"
+      ]
     }
   ],
   "latex-workshop.latex.tools": [
@@ -13,8 +15,11 @@
       "name": "latexmk-lua",
       "command": "latexmk",
       "args": [
+        "-cd",
         "-lualatex",
+        "-outdir=%OUTDIR%",
         "-interaction=nonstopmode",
+        "-halt-on-error",
         "-file-line-error",
         "%DOC%"
       ]

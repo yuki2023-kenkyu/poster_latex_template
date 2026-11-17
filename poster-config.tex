@@ -13,15 +13,16 @@
 % Base font sizes in points (before applying the font-level preset).
 % Body 40 pt is the requested PowerPoint-equivalent size at standard level.
 % You can override individual roles here without changing posterstyle.sty.
-\newcommand{\PosterNumberPt}{26}
+\newcommand{\PosterNumberPt}{30}
 \newcommand{\PosterTitlePt}{58}
 \newcommand{\PosterPresenterPt}{39}
-\newcommand{\PosterCoauthorPt}{31}
-\newcommand{\PosterAffiliationPt}{25}
+\newcommand{\PosterCoauthorPt}{27}
+\newcommand{\PosterAffiliationPt}{24}
 \newcommand{\PosterBlockTitlePt}{44}
 \newcommand{\PosterBodyPt}{40}
 \newcommand{\PosterCaptionPt}{32}
 \newcommand{\PosterReferencePt}{27}
+\newcommand{\PosterFeaturedPaperPt}{24}
 \newcommand{\PosterFooterPt}{22}
 
 % Content: replace these examples with your own information.
@@ -36,6 +37,11 @@
 
 % Replace this file with your own university logo (PDF, PNG, or JPG).
 \newcommand{\PosterLogoFile}{./logos/fukushima-university-logo.png}
+
+% Main publication: shown in the slim full-width band immediately below the header.
+% Set the BibLaTeX key of the featured paper from references.bib.
+\newcommand{\PosterFeaturedPaperLabel}{Reference:}
+\newcommand{\PosterFeaturedPaperKey}{aghanim2020}
 
 % Bottom strip. Use empty strings if a field should be omitted.
 \newcommand{\PosterConference}{The 35th Workshop on General Relativity and Gravitation in Japan}
@@ -56,12 +62,18 @@
 \newlength{\PosterHeaderGap}
 \setlength{\PosterHeaderGap}{8mm}
 
-% Header/footer bands (A0 portrait); these lengths control strip thickness,
-% while the strip WIDTH remains the full 841 mm page width.
+% Header: two-level photo-inspired composition (main header + slim paper bar).
+% The paper strip is directly beneath the title/presenter/coauthor/affiliation row.
+\newlength{\PosterHeaderMainHeight}
+\setlength{\PosterHeaderMainHeight}{150mm}
+\newlength{\PosterFeaturedPaperBandHeight}
+\setlength{\PosterFeaturedPaperBandHeight}{18mm}
 \newlength{\PosterHeaderBandHeight}
-\setlength{\PosterHeaderBandHeight}{142mm}
+\setlength{\PosterHeaderBandHeight}{\dimexpr\PosterHeaderMainHeight+\PosterFeaturedPaperBandHeight\relax}
+\newlength{\PosterFeaturedPaperCenterDepth}
+\setlength{\PosterFeaturedPaperCenterDepth}{\dimexpr\PosterHeaderMainHeight+\PosterFeaturedPaperBandHeight/2\relax}
 \newlength{\PosterHeaderContentHeight}
-\setlength{\PosterHeaderContentHeight}{107mm}
+\setlength{\PosterHeaderContentHeight}{125mm}
 \newlength{\PosterFooterBandHeight}
 \setlength{\PosterFooterBandHeight}{28mm}
 
@@ -82,8 +94,8 @@
 \newlength{\PosterHighlightPadding}
 \setlength{\PosterHighlightPadding}{3mm}
 
-% Logo placement. The poster number is ABOVE the logo in the left header column.
+% Poster number above the logo in a light left column (about 23% of the page).
 \newlength{\PosterNumberLogoGap}
-\setlength{\PosterNumberLogoGap}{7mm}
+\setlength{\PosterNumberLogoGap}{11mm}
 \newlength{\PosterLogoMaxHeight}
-\setlength{\PosterLogoMaxHeight}{64mm}
+\setlength{\PosterLogoMaxHeight}{70mm}

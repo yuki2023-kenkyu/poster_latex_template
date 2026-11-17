@@ -1,6 +1,6 @@
 # A0 portrait poster (LuaLaTeX + beamerposter + biblatex)
 
-Windows + Git + VS Code + TeX Live 向けの英語の研究ポスター用プロジェクトです．添付されたポスターの**濃紺のヘッダ・フッタ，中央揃えの見出し＋水平罫線，淡い色の強調セクション**を参考にしています．大学ロゴにはユーザー提供の背景透過PNGを使用しています．本文40 pt，A0縦長（841 × 1189 mm）です．
+Windows + Git + VS Code + TeX Live 向けの英語の研究ポスター用プロジェクトです．添付されたポスターの**左側の番号＋大学ロゴ欄（約23%），右側の中央揃えタイトル・著者・所属欄（約77%），その直下の細い主要論文帯**という配置・寸法を参考にしています．配色の全面的な模倣ではなく配置を優先し，Section区切り線は通常・強調セクションで同じテーマ色に統一します．大学ロゴにはユーザー提供の背景透過PNGを使用しています．本文40 pt，A0縦長（841 × 1189 mm）です．
 
 ## 前提環境
 
@@ -15,8 +15,12 @@ PowerShellで `where.exe lualatex`，`where.exe biber`，`where.exe latexmk` を
 VS Codeでフォルダ全体を開いて `main.tex` をビルドします．LaTeX Workshopのレシピ `latexmk (LuaLaTeX + Biber)` が設定されています．PowerShellなら，プロジェクトルートで：
 
 ```powershell
-latexmk main.tex
+latexmk -cd -lualatex -outdir=build main.tex
 ```
+
+生成先は `build/main.pdf` です．同じ場所に `main.log`，`main.bcf`，`main.bbl` なども保存されます．VS Code の `LaTeX Workshop` では `latexmk (LuaLaTeX + Biber)` レシピを選択してください．レシピも `-outdir=%OUTDIR%` を明示しています．
+
+**PDFが生成されないとき**：`latexmk -cd -lualatex -outdir=build main.tex` をルートで実行し，最初に表示される `!` または `Error` の内容を確認してください．コンパイルエラーの場合はPDFが生成されません．ログがあれば `build/main.log` を確認し，ファイルが存在しない場合は TeX Live の `latexmk`，`lualatex`，`biber`，`beamerposter`，`biblatex` が利用可能か確認してください．Windows PowerShellでは `where.exe latexmk`，`where.exe lualatex`，`where.exe biber` で実行ファイルを検査できます．GitHub上の既存の `main.pdf` があっても，最新のビルド結果ではありません．
 
 完成PDFは `build/main.pdf`．中間ファイルの削除は `latexmk -c main.tex`．`.latexmkrc` がLuaLaTeXとBiberの再実行を制御します．
 
@@ -30,8 +34,6 @@ A0_Portrait_Poster/
 ├── references.bib             # Biber用文献データ
 ├── .latexmkrc                 # Windows対応latexmk設定
 ├── .gitignore
-├── .gitattributes
-├── .editorconfig
 ├── .vscode/
 │   ├── settings.json
 │   └── extensions.json
@@ -40,31 +42,30 @@ A0_Portrait_Poster/
 │   ├── background.tex         # 左カラム
 │   ├── methods.tex            # 左カラム
 │   ├── results.tex            # 右カラム，淡色強調
-│   ├── conclusions.tex        # 右カラム
-│   └── README.md
-└── figures/
-    ├── fukushima-university-logo.png  # 添付ロゴ
-    └── README.md
+│   └── conclusions.tex        # 右カラム
+├── logos/
+│   └── fukushima-university-logo.png  # 大学ロゴ
+└── build/                    # コンパイル時に生成（Git管理外）
 ```
 
-`build/` はコンパイル時に生成され，`.gitignore` で除外されます．
+`build/` はコンパイル時に生成され，`.gitignore` で除外されます．既にリポジトリにあるルート直下の `main.pdf` はビルド生成物と区別してください．
 
-## 今回の調整：コンパクトなヘッダと統一した見出し余白
+## ヘッダ・主要論文・Section区切りの設定
 
-- ヘッダ高さ **222 mm (v2) → 142 mm**，フッタ高さ **51 mm (v2) → 28 mm**．帯の横幅はA0用紙の全幅を維持します．
-- タイトル **82 pt (v2) → 58 pt**，発表者39 pt，共著者31 pt，所属25 pt．本文は**40 ptのまま**．
-- **Poster No. を左側カラムのロゴの上**に配置．ロゴの右側にあるタイトル・著者・所属は中央揃えを維持します．
-- 提供された大学ロゴは透明余白のみトリミングして使用（文字・図形は変更なし）．
-- Section見出し44 pt，見出し→区切り線3.5 mm，線→本文6 mm，セクション間8 mm，罫線1 pt．通常/強調ブロックで基準を揃えています．
-- `poster-config.tex` で各寸法を個別に変更可能．強調ブロックでは `PosterRuleBodyGap = 2 x PosterHighlightPadding` を保つと，通常ブロックと段差が揃います．
+- A0縦長（841 × 1189 mm）．全幅ヘッダのうち，主ヘッダ高さ **150 mm**，主要論文帯高さ **18 mm**，フッタ高さ **28 mm**．
+- 主ヘッダは左約23%（ポスター番号の下に大学ロゴ），右約77%（タイトル，発表者，共著者，所属を中央揃え）の二領域．写真の**配置と相対寸法**を参考にしています．
+- 主要論文帯は主ヘッダの直下に配置．`poster-config.tex` の `\\PosterFeaturedPaperKey` に `references.bib` の文献キーを設定します．引用書式は共通の `\\posterciteinline` を再利用し，`et al.`・雑誌名はイタリック，巻番号は太字とします．
+- 本文は標準 **40 pt**，タイトル58 pt，発表者39 pt，共著者27 pt，所属24 pt．Section見出し44 pt．
+- Section区切り線は通常の `block` と強調 `alertblock` の両方で `PosterAccent` を使用し，選択したカラーテーマに応じて統一します．
+- 配色・文字サイズ・余白・各帯の高さは `poster-config.tex` で変更できます．既存の本文二段組・引用・フッタ形式は維持しています．
 
 ## 編集
 
 1. **配色**：`poster-config.tex` の `\PosterColorTheme` を `navy`（添付見本に近い），`forest`，`slate` から選択．色定義は `posterstyle.sty` にあります．
 2. **文字サイズ**：`\PosterFontLevel` は `compact`（36 pt），`standard`（40 pt），`large`（44 pt）．`\PosterTitlePt`，`\PosterBlockTitlePt` 等は同じ設定ファイル内で個別変更できます．
-3. **タイトルと著者**：`poster-config.tex`．ポスター番号は左側カラムで大学ロゴの上，タイトルと著者・所属は右側で中央揃えです．所属には強制改行を入れず，横並びで設定しています．
+3. **タイトル・著者・主要論文**：`poster-config.tex`．ポスター番号は左側の明るい領域で大学ロゴの上，タイトルと著者・所属は右側の暗い領域で中央揃えです．その下の主要論文帯には `\\PosterFeaturedPaperKey` で指定した文献を表示します．
 4. **本文**：`documents/*.tex`．**新しいセクションを追加した場合だけ**，`main.tex` の該当するカラム内に `\input{documents/new-section.tex}` を追加します．
-5. **図**：`figures/` に配置し，たとえば `\includegraphics[width=\linewidth]{figures/myplot.pdf}`．TeXの相対パスは常にルートの `main.tex` 基準です．
+5. **図**：必要に応じて `figures/` を作成して配置し，たとえば `\includegraphics[width=\linewidth]{figures/myplot.pdf}`．TeXの相対パスは常にルートの `main.tex` 基準です．
 6. **セクション区切り**：`block` = 白地＋中央タイトル＋水平線，`alertblock` = 淡色背景の同形式．アクセント色はテーマで連動します．
 7. **フッタ**：学会名・会場・日付・連絡先を `poster-config.tex` で設定．
 
