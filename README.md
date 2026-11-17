@@ -157,3 +157,10 @@ Sectionラベルは環境開始直後，Figure/Tableラベルは `\caption` の�
 数式には `\begin{equation}\label{eq:name}...\end{equation}` と `\zcref{eq:name}` を使用できます．
 前方参照は `latexmk` が必要に応じて再実行し解決します．
 TeX Live 2025 の `zref-clever` で動作確認しています．
+
+## APS/PRD Table表示とヘッダの上下余白（2026-11-18）
+
+- `posterstyle.sty` は `babel` の英語caption設定で `TABLE` を指定し，PDFでは `TABLE I.` と表示します．Table番号は大文字ローマ数字のままです．
+- `documents/results.tex` の標準 `table` / `tabular` は，表の上下を `\hline\hline`，列見出し下を `\hline`，縦罫線なしとします（APS/PRDの単純な表の基本形）．
+- 番号表示時は左列の番号・ロゴを `\PosterHeaderLeftRaise` で上へ移動し，番号とロゴの間隔を `\PosterNumberLogoGap` で調整します．右側のタイトル・著者・所属は `\PosterHeaderRightBalanceRaise` と `\PosterHeaderRightBalanceGap` を適用し，両領域の上下余白を近づけています．
+- **ポスター番号非表示時は，右側テキストの位置と行間を変更しません．** 追加調整は `\ifPosterShowNumber` の場合だけ有効です．主ヘッダ116 mm・本文40 pt・既存フォントサイズ・ロゴ寸法は変更しません．

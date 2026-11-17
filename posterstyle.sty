@@ -76,7 +76,8 @@
 % Table numbering uses uppercase Roman numerals and the TABLE label.
 % The same centered caption template remains valid for figures.
 \renewcommand{\thetable}{\Roman{table}}
-\renewcommand{\tablename}{TABLE}
+% Preserve uppercase TABLE when babel initializes its English caption names.
+\addto\captionsenglish{\renewcommand{\tablename}{TABLE}}
 \defbeamertemplate{caption}{poster-prd}{%
   \centering
   {\usebeamercolor[fg]{caption name}\usebeamerfont*{caption name}%
@@ -238,6 +239,15 @@
     {\color{white}\fbox{\parbox[c][50mm][c]{#1}{\centering University logo}}}%
   }%
 }
+% Balance the visible right text stack against the left number/logo group.
+% When the poster number is hidden, the previous text spacing is unchanged.
+\newcommand{\PosterHeaderTextGap}[1]{%
+  \ifPosterShowNumber
+    \vspace{\dimexpr#1+\PosterHeaderRightBalanceGap\relax}%
+  \else
+    \vspace{#1}%
+  \fi
+}
 \newcommand{\PosterHeader}{%
   \begin{tikzpicture}[remember picture,overlay]%
     \fill[PosterAccent] (current page.north west) rectangle
@@ -259,7 +269,7 @@
     \begin{column}{0.225\textwidth}
       \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
         \ifPosterShowNumber
-          \vspace*{-\PosterNumberBoxGrow}%
+          \vspace*{\dimexpr-\PosterNumberBoxGrow-\PosterHeaderLeftRaise\relax}%
           {\setlength{\fboxsep}{0pt}%
            \noindent\colorbox{white}{%
              \parbox[c][\dimexpr\PosterNumberBoxHeight+\PosterNumberBoxGrow\relax][c]{\linewidth}{%
@@ -276,13 +286,17 @@
     \end{column}
     \begin{column}{0.755\textwidth}
       \begin{minipage}[t][\PosterHeaderContentHeight][t]{\linewidth}%
-        \vspace*{-\PosterRightContentRaise}%
+        \ifPosterShowNumber
+          \vspace*{-\dimexpr\PosterRightContentRaise+\PosterHeaderRightBalanceRaise\relax}%
+        \else
+          \vspace*{-\PosterRightContentRaise}%
+        \fi
         {\centering\PosterTitleFont\color{white}\PosterTitle\par}%
-        \vspace{\PosterTitleAuthorGap}%
+        \PosterHeaderTextGap{\PosterTitleAuthorGap}%
         {\centering\PosterPresenterFont\color{white}\underline{\PosterPresenter}\par}%
-        \vspace{\PosterAuthorGap}%
+        \PosterHeaderTextGap{\PosterAuthorGap}%
         {\centering\PosterCoauthorFont\color{white}\textbf{Collaboration with:}\space\PosterCoauthors\par}%
-        \vspace{\PosterAffiliationGap}%
+        \PosterHeaderTextGap{\PosterAffiliationGap}%
         {\centering\PosterAffiliationFont\color{white}\PosterAffiliations\par}%
       \end{minipage}%
     \end{column}
