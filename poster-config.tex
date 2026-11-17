@@ -66,6 +66,9 @@
 % Publication reference appears immediately below the main header.
 \newlength{\PosterHeaderTopInset}
 \setlength{\PosterHeaderTopInset}{7mm}
+% Move only the text stack upward; do not change the overall header band.
+\newlength{\PosterRightContentRaise}
+\setlength{\PosterRightContentRaise}{14mm}
 \newlength{\PosterHeaderMainHeight}
 \setlength{\PosterHeaderMainHeight}{116mm}
 \newlength{\PosterFeaturedPaperBandHeight}
@@ -77,11 +80,11 @@
 \newlength{\PosterHeaderContentHeight}
 \setlength{\PosterHeaderContentHeight}{105mm}
 \newlength{\PosterTitleAuthorGap}
-\setlength{\PosterTitleAuthorGap}{3mm}
+\setlength{\PosterTitleAuthorGap}{1.5mm}
 \newlength{\PosterAuthorGap}
-\setlength{\PosterAuthorGap}{1.5mm}
+\setlength{\PosterAuthorGap}{0.5mm}
 \newlength{\PosterAffiliationGap}
-\setlength{\PosterAffiliationGap}{1.5mm}
+\setlength{\PosterAffiliationGap}{0.5mm}
 \newlength{\PosterFooterBandHeight}
 \setlength{\PosterFooterBandHeight}{28mm}
 
@@ -105,5 +108,16 @@
 % Poster number is centered directly above the logo on a solid navy background.
 \newlength{\PosterNumberLogoGap}
 \setlength{\PosterNumberLogoGap}{5mm}
+% White box above the logo: same width as the left logo column.
+\newlength{\PosterNumberBoxHeight}
+\setlength{\PosterNumberBoxHeight}{21mm}
 \newlength{\PosterLogoMaxHeight}
 \setlength{\PosterLogoMaxHeight}{73mm}
+
+% Frame surrounding Abstract only; negative spacing moves it toward Reference.
+\newlength{\PosterAbstractFramePadding}
+\setlength{\PosterAbstractFramePadding}{3mm}
+\newlength{\PosterAbstractFrameRule}
+\setlength{\PosterAbstractFrameRule}{1pt}
+\newlength{\PosterAbstractRaise}
+\setlength{\PosterAbstractRaise}{26mm}
