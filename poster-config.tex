@@ -119,13 +119,21 @@
 
 % Poster number is centered directly above the logo on a solid navy background.
 \newlength{\PosterNumberLogoGap}
-\setlength{\PosterNumberLogoGap}{5mm}
+\setlength{\PosterNumberLogoGap}{12.5mm}
 % White box above the logo: same width as the left logo column.
 \newlength{\PosterNumberBoxHeight}
 \setlength{\PosterNumberBoxHeight}{21mm}
 % Extend the top of the number box while preserving its bottom edge.
 \newlength{\PosterNumberBoxGrow}
 \setlength{\PosterNumberBoxGrow}{12mm}
+% Balance the number and logo together, preserving their dimensions.
+\newlength{\PosterHeaderLeftRaise}
+\setlength{\PosterHeaderLeftRaise}{10.5mm}
+% Only the number-visible mode uses these extra right-text adjustments.
+\newlength{\PosterHeaderRightBalanceRaise}
+\setlength{\PosterHeaderRightBalanceRaise}{6mm}
+\newlength{\PosterHeaderRightBalanceGap}
+\setlength{\PosterHeaderRightBalanceGap}{3.5mm}
 \newlength{\PosterLogoMaxHeight}
 \setlength{\PosterLogoMaxHeight}{73mm}
 
