@@ -144,6 +144,7 @@
 \DeclareFieldFormat{posterjournal}{\mkbibemph{#1}}
 \DeclareFieldFormat{postervolume}{\mkbibbold{#1}}
 \DeclareFieldFormat{posterpages}{#1}% No page prefix for poster citations.
+\DeclareFieldFormat{postereprint}{#1}% Raw identifier (no automatic arXiv or subject suffix).
 \newbibmacro*{poster:publication}{%
   \printnames[posterfamily]{labelname}%
   \setunit{\addcomma\space}%
@@ -159,8 +160,35 @@
 }
 \DeclareCiteCommand{\posterciteinline}[\mkbibbrackets]
   {} {\usebibmacro{poster:publication}} {\addsemicolon\space} {}
+% The featured Reference line reads every name and the eprint from .bib.
+% Use given-family (e.g. "Yuki Hashimoto"), preserving the .bib author order.
+\DeclareNameFormat{posterfullnames}{%
+  \nameparts{#1}%
+  \usebibmacro{name:given-family}
+    {\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
+}
+\newbibmacro*{poster:publication-full}{%
+  \printnames[posterfullnames][1-99]{author}%
+  \setunit{\addcomma\space}%
+  \iffieldundef{shortjournal}
+    {\printfield[posterjournal]{journaltitle}}
+    {\printfield[posterjournal]{shortjournal}}%
+  \setunit{\addspace}%
+  \printfield[postervolume]{volume}%
+  \setunit{\addcomma\space}%
+  \iffieldundef{eid}{\printfield[posterpages]{pages}}{\printfield{eid}}%
+  \setunit{\addspace}%
+  \printtext[parens]{\printfield{year}}%
+  \iffieldundef{eprint}{}{%
+    \setunit{\addspace}%
+    \printtext[brackets]{%
+      \iffieldundef{eprinttype}{}{\printfield{eprinttype}\addcolon}%
+      \printfield[postereprint]{eprint}%
+    }%
+  }%
+}
 \DeclareCiteCommand{\postercitebare}
-  {} {\usebibmacro{poster:publication}} {\addsemicolon\space} {}
+  {} {\usebibmacro{poster:publication-full}} {\addsemicolon\space} {}
 \newcommand{\postercite}[1]{%
   \par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}%
     \posterciteinline{#1}\par

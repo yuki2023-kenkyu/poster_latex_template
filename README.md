@@ -55,7 +55,7 @@ A0_Portrait_Poster/
 - A0縦長（841 × 1189 mm），**主ヘッダ116 mm**，Reference帯16 mm，フッタ28 mm．
 - 主ヘッダ全域を濃紺に統一．左約23%のロゴ領域で**ポスター番号を中央揃え**，右約77%にタイトル・著者・所属を中央揃え．ヘッダ内の文字・ロゴは上端寄せ．
 - 番号43 pt，タイトル58 pt，発表者46 pt，共著者36 pt，所属32 pt，本文40 pt（標準レベル）．色・サイズ・間隔は `poster-config.tex` で変更可能．
-- Reference帯は**淡い紺色**．この帯では引用の角括弧を省略し，`Reference: Hashimoto et al., JCAP 09, 146 (2026)` の形式．*et al.* と雑誌名はイタリック，巻は太字．本文内の `\\postercite{...}` は従来どおり角括弧付き．
+- Reference帯は**淡い紺色**．この帯では引用全体の角括弧を省略し，`.bib` の `author`・`shortjournal`/`journaltitle`・`volume`・`eid`/`pages`・`year`・`archivePrefix`・`eprint` から生成します．例：`Reference: Yuki Hashimoto, Kazuharu Bamba, and Sanjay Mandal, JCAP 09, 146 (2026) [arXiv:2604.22372].` 著者は名→姓ですべて表示し，雑誌名はイタリック，巻は太字，末尾にはピリオドを付けます．`eprint` がなければ識別子部分は省略します．本文内の引用は従来どおり短縮形・角括弧付きです．本文内の `\\postercite{...}` は従来どおり角括弧付き．
 - 従来の2段組，Section見出し・区切り線，`documents/*.tex` の分割管理は維持．主要文献 `Hashimoto:2026zcr` と `references.bib` の既存エントリを保持．
 
 ## 編集
@@ -70,7 +70,7 @@ A0_Portrait_Poster/
 
 ## 引用
 
-各セクションの本文の直後に `\postercite{aghanim2020}` と書きます．参考文献は `references.bib` に登録します．タイトルを除き，右寄せ・淡色・小さめで以下の表記になります：
+各セクションの本文の直後に `\postercite{aghanim2020}` と書きます．参考文献は `references.bib` に登録します．本文引用はタイトルを除き，右寄せ・淡色・小さめで以下の表記になります：
 
 `[Aghanim et al., A&A 641, A6 (2020)]`
 
