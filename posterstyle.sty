@@ -7,6 +7,8 @@
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
 \RequirePackage{fontspec}
+% Standard \label entries are recorded for \zcref by zref-clever's label hook.
+\RequirePackage{zref-clever}
 
 % ---- Reproducible, TeX Live-shipped fonts (English only) ----
 % Replace these two lines if your design requires different fonts.
@@ -70,8 +72,20 @@
 % ---- Beamer typography and section dividers ----
 \setbeamersize{text margin left=\PosterMargin,text margin right=\PosterMargin}
 \setbeamertemplate{navigation symbols}{}
-% Native Beamer figure captions; use \centering inside each figure.
-\setbeamertemplate{caption}[numbered]
+% APS/PRD-inspired native captions: center the caption and use a period.
+% Table numbering uses uppercase Roman numerals and the TABLE label.
+% The same centered caption template remains valid for figures.
+\renewcommand{\thetable}{\Roman{table}}
+\renewcommand{\tablename}{TABLE}
+\defbeamertemplate{caption}{poster-prd}{%
+  \centering
+  {\usebeamercolor[fg]{caption name}\usebeamerfont*{caption name}%
+   \insertcaptionname~\insertcaptionnumber
+   \usebeamertemplate{caption label separator}}%
+  \insertcaption\par
+}
+\setbeamertemplate{caption label separator}[period]
+\setbeamertemplate{caption}[poster-prd]
 \setbeamerfont{caption}{size=\PosterCaptionFont}
 \setbeamercolor{caption}{fg=PosterMuted}
 \setbeamercolor{caption name}{fg=PosterMuted}
@@ -91,6 +105,22 @@
 \setbeamertemplate{itemize item}{\raisebox{0.18ex}{\scriptsize\textbullet}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.24em}
+
+% Poster sections are numbered in document order across the two columns.
+% Use the environments instead of hard-coded numeric prefixes in block titles.
+% Beamer's \section is for slide navigation, so keep a dedicated poster counter.
+\newcounter{postersection}
+\renewcommand{\thepostersection}{\Roman{postersection}}
+% Map the custom Beamer poster counter to the built-in section reference type.
+\zcsetup{cap,countertype={postersection=section}}
+\newenvironment{posterblock}[1]{%
+  \refstepcounter{postersection}%
+  \begin{block}{\thepostersection.\ #1}%
+}{\end{block}}
+\newenvironment{posteralertblock}[1]{%
+  \refstepcounter{postersection}%
+  \begin{alertblock}{\thepostersection.\ #1}%
+}{\end{alertblock}}
 
 % Shared heading geometry: explicit vertical rule avoids an extra font-sized
 % baseline between the heading and its separator line.
@@ -163,8 +193,6 @@
   \setunit{\addspace}%
   \printtext[parens]{\printfield{year}}%
 }
-\DeclareCiteCommand{\posterciteinline}[\mkbibbrackets]
-  {} {\usebibmacro{poster:publication}} {\addsemicolon\space} {}
 % The featured Reference line reads every name and the eprint from .bib.
 % Use given-family (e.g. "Yuki Hashimoto"), preserving the .bib author order.
 \DeclareNameFormat{posterfullnames}{%
@@ -195,14 +223,12 @@
 \DeclareCiteCommand{\postercitebare}
   {} {\usebibmacro{poster:publication-full}} {\addsemicolon\space} {}
 % Standard \cite{key} provides VS Code bibliography-key completion.
-% The output matches the former \postercite: separate, right-aligned and muted.
+% The output is a separate, right-aligned and muted reference line.
 \DeclareCiteCommand{\cite}
   {\par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}[}
   {\usebibmacro{poster:publication}}
   {\addsemicolon\space}
   {]\par\endgroup}
-% Retain the old interface for existing section files.
-\let\postercite\cite
 
 % ---- Tight navy header, number/Reference optional ----
 \newcommand{\PosterHeaderLogo}[1]{%
