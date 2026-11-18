@@ -236,7 +236,7 @@ The data are compared with a reference cosmology \cite{aghanim2020}.
 
 現在の `\cite` は，文章中にそのまま挿入される**インライン引用**です．表示形式（例：`[Aghanim et al., A&A 641, A6 (2020)]`）と小さめの文字サイズは維持します．文献の `.bib` に `eprint`（arXiv識別子）と `eprinttype={arxiv}` がある場合，**角括弧を含む引用全体**が `https://arxiv.org/abs/<eprint>` へのリンクになります．複数文献の場合はそれぞれ個別のリンクになります．arXiv情報のない文献はリンクなしで表示し，存在しない識別子を推測しません．
 
-ヘッダのReference帯は本文引用と別で，`\PosterFeaturedPaperKey` に指定したキーの**著者全員，雑誌，巻，論文番号，年，登録済みならarXiv番号**を `.bib` 情報から取得します．そのため，`references.bib` の入力内容も確認してください．
+ヘッダのReference帯は本文引用と別で，`\PosterFeaturedPaperKey` に指定したキーの**著者全員，雑誌，巻，論文番号，年，arXiv識別子と分野区分**を `.bib` から取得します．BibLaTeX/Biberは `archivePrefix` → `eprinttype`，`primaryClass` → `eprintclass` として扱います．例えば `eprint={2604.22372}`，`archivePrefix={arXiv}`，`primaryClass={astro-ph.CO}` の場合，**`[arXiv:2604.22372[astro-ph.CO]]`** と表示し，`arXiv:2604.22372` の部分だけをarXivの論文ページへリンクします．分野区分が未登録なら内側の `[分類]` は表示しません．その他のeprint種別にarXivリンクは付けません．
 
 ## 7. 見た目を調整するとき
 

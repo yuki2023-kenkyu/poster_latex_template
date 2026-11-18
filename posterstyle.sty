@@ -310,8 +310,22 @@
   \iffieldundef{eprint}{}{%
     \setunit{\addspace}%
     \printtext[brackets]{%
-      \iffieldundef{eprinttype}{}{\printfield{eprinttype}\addcolon}%
-      \printfield[postereprint]{eprint}%
+      % BibLaTeX maps legacy archivePrefix/primaryClass to
+      % eprinttype/eprintclass via Biber. The type may be arXiv or arxiv.
+      \ifboolexpr{%
+        test {\iffieldequalstr{eprinttype}{arxiv}} or
+        test {\iffieldequalstr{eprinttype}{arXiv}}%
+      }{%
+        % Only the arXiv identifier is clickable, not the class or brackets.
+        \href{https://arxiv.org/abs/\thefield{eprint}}{%
+          arXiv:\printfield[postereprint]{eprint}}%
+        % Literal [] prevents nested BibLaTeX brackets becoming parentheses.
+        \iffieldundef{eprintclass}{}{[\thefield{eprintclass}]}%
+      }{%
+        % Do not fabricate an arXiv link for other eprint types.
+        \iffieldundef{eprinttype}{}{\printfield{eprinttype}\addcolon}%
+        \printfield[postereprint]{eprint}%
+      }%
     }%
   }%
 }
