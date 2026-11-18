@@ -162,27 +162,6 @@
 \renewcommand{\thesection}{\Roman{section}}
 \zcsetup{cap,abbrev}
 
-% A list at the very start of a Section gains Beamer's \@topsep, whereas
-% a first plain paragraph does not. Suppress only that initial top skip.
-% Preserve \itemsep and the spacing of lists after the first paragraph.
-\makeatletter
-\newif\ifPosterAtBlockStart
-\newcommand{\PosterAdjustFirstList}{%
-  \PosterSavedFirstListCallback
-  \ifPosterAtBlockStart
-    \@topsep\z@
-    \PosterAtBlockStartfalse
-  \fi
-}
-\newcommand{\PosterNormalizeBlockStart}{%
-  \par
-  \PosterAtBlockStarttrue
-  \everypar{\PosterAtBlockStartfalse\everypar{}}%
-  \let\PosterSavedFirstListCallback\beamer@firstlineitemizeunskip
-  \let\beamer@firstlineitemizeunskip\PosterAdjustFirstList
-}
-\makeatother
-
 % Shared heading geometry: explicit vertical rule avoids an extra font-sized
 % baseline between the heading and its separator line.
 \newcommand{\PosterHeadingRule}{%
@@ -201,7 +180,6 @@
   \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block body}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body}%
-    \PosterNormalizeBlockStart
 }
 \defbeamertemplate{block end}{poster-ruled}{%
   \end{beamercolorbox}%
@@ -221,7 +199,6 @@
   \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block body alerted}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body alerted}%
-    \PosterNormalizeBlockStart
 }
 \defbeamertemplate{block alerted end}{poster-highlight}{%
   \end{beamercolorbox}%
