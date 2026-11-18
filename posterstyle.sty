@@ -125,7 +125,7 @@
 \newcounter{postersection}
 \renewcommand{\thepostersection}{\Roman{postersection}}
 % Map the custom Beamer poster counter to the built-in section reference type.
-\zcsetup{cap,countertype={postersection=section}}
+\zcsetup{cap,abbrev,countertype={postersection=section}}
 \newenvironment{posterblock}[1]{%
   \refstepcounter{postersection}%
   \begin{block}{\thepostersection.\ #1}%

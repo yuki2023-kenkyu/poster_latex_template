@@ -172,3 +172,11 @@ TeX Live 2025 の `zref-clever` で動作確認しています．
 - Figureキャプションは，図の下の `\caption{...}` により `FIG. 1. ...` の大文字略称＋アラビア数字＋ピリオドで出力します．Tableキャプションは表の上に `TABLE I. ...`．両者とも黒系本文色に統一し，中央揃えを維持します．
 - 実際の研究図では，キャプション単体で図を理解できるよう，未定義の記号・略語・パネルを説明してください．プレースホルダーのキャプション文章はPRDに準拠した科学的説明ではありません．
 - この調整は **ポスター向けの視認性調整**です．APS/PRDの版面レイアウトや字体を完全再現するものではありません．
+
+## APS本文中の相互参照表記（2026-11-18）
+
+- Figureキャプションは `FIG. 1.`，本文中は `Fig. 1`（文頭では `Figure 1`）です．Tableキャプションは `TABLE I.`，本文は `Table I`．
+- `posterstyle.sty` で `\zcsetup{cap,abbrev,countertype={postersection=section}}` を設定します．通常の文章中は `\zcref{fig:results}`，文頭は `\zcref[S]{fig:results}` を使用します．
+- 数式は文中 `Eq. (1)`，文頭 `Equation (1)` に対応します．
+- Sectionは `Sec. II` 等の略記と，文頭 `Section II` を使い分けます．
+- キャプションの表示規則と本文の相互参照規則は独立しています．
