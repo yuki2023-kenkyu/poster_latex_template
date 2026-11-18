@@ -119,21 +119,10 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.24em}
 
-% Poster sections are numbered in document order across the two columns.
-% Use the environments instead of hard-coded numeric prefixes in block titles.
-% Beamer's \section is for slide navigation, so keep a dedicated poster counter.
-\newcounter{postersection}
-\renewcommand{\thepostersection}{\Roman{postersection}}
-% Map the custom Beamer poster counter to the built-in section reference type.
-\zcsetup{cap,abbrev,countertype={postersection=section}}
-\newenvironment{posterblock}[1]{%
-  \refstepcounter{postersection}%
-  \begin{block}{\thepostersection.\ #1}%
-}{\end{block}}
-\newenvironment{posteralertblock}[1]{%
-  \refstepcounter{postersection}%
-  \begin{alertblock}{\thepostersection.\ #1}%
-}{\end{alertblock}}
+% Native Beamer section counter, native block and alertblock environments.
+% Section headings and zref-clever use the same uppercase Roman numbering.
+\renewcommand{\thesection}{\Roman{section}}
+\zcsetup{cap,abbrev}
 
 % Shared heading geometry: explicit vertical rule avoids an extra font-sized
 % baseline between the heading and its separator line.
@@ -286,7 +275,7 @@
            \noindent\colorbox{white}{%
              \parbox[c][\dimexpr\PosterNumberBoxHeight+\PosterNumberBoxGrow\relax][c]{\linewidth}{%
                \centering\PosterNumberFont\bfseries\color{black}%
-               Poster No.\ \PosterNumber\par}%
+               Poster No.:\ \PosterNumber\par}%
            }\par}%
           \vspace{\PosterNumberLogoGap}%
           \noindent\makebox[\linewidth][c]{\PosterHeaderLogo{\linewidth}}%

@@ -1,11 +1,16 @@
-% Body section; Roman numeral is assigned automatically.
-\begin{posterblock}{Data and Methods}
+% Native Beamer section; Roman numeral is assigned automatically.
+\section{Data and Methods}
 \label{sec:methods}
+\begin{block}{\thesection.\ \insertsectionhead}
 Describe observational samples, theoretical models, mathematical definitions,
 and the methods used to evaluate uncertainties.
 \begin{figure}
   \centering
   % Replace this temporary box with \includegraphics[width=.9\linewidth]{figures/plot.pdf}
+  % You can also draw directly with a native TikZ picture:
+  % \begin{tikzpicture}
+  %   \draw[->] (0,0) -- (2,0) node[right] {$z$};
+  % \end{tikzpicture}
   \setlength{\fboxsep}{0pt}%
   \fcolorbox{PosterRule}{PosterFigurePale}{%
     \parbox[c][125mm][c]{0.90\linewidth}{%
@@ -16,4 +21,4 @@ and the methods used to evaluate uncertainties.
   \caption{Replace with the actual method figure and caption.}
   \label{fig:methods}
 \end{figure}
-\end{posterblock}
+\end{block}
