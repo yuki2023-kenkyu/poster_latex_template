@@ -77,7 +77,12 @@
 % The same centered caption template remains valid for figures.
 \renewcommand{\thetable}{\Roman{table}}
 % Preserve uppercase TABLE when babel initializes its English caption names.
-\addto\captionsenglish{\renewcommand{\tablename}{TABLE}}
+% APS guide: TABLE I. and FIG. 1. (uppercase name, trailing periods).
+% Babel may reset names; define both in its English caption setup.
+\addto\captionsenglish{%
+  \renewcommand{\tablename}{TABLE}%
+  \renewcommand{\figurename}{FIG.}%
+}
 \defbeamertemplate{caption}{poster-prd}{%
   \centering
   {\usebeamercolor[fg]{caption name}\usebeamerfont*{caption name}%
@@ -88,8 +93,15 @@
 \setbeamertemplate{caption label separator}[period]
 \setbeamertemplate{caption}[poster-prd]
 \setbeamerfont{caption}{size=\PosterCaptionFont}
-\setbeamercolor{caption}{fg=PosterMuted}
-\setbeamercolor{caption name}{fg=PosterMuted}
+% Use the normal text color for PRD-like captions instead of muted gray.
+\setbeamercolor{caption}{fg=PosterText}
+\setbeamercolor{caption name}{fg=PosterText}
+% Native table/tabular rules. Lengths belong to poster-config.tex;
+% this local hook avoids altering unrelated tabular environments.
+\AtBeginEnvironment{table}{%
+  \setlength{\arrayrulewidth}{\PosterTableRuleWidth}%
+  \setlength{\doublerulesep}{\PosterTableDoubleRuleSep}%
+}
 \setbeamertemplate{headline}{}
 \setbeamertemplate{footline}{}
 \setbeamercolor{normal text}{fg=PosterText,bg=white}
@@ -107,21 +119,10 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.24em}
 
-% Poster sections are numbered in document order across the two columns.
-% Use the environments instead of hard-coded numeric prefixes in block titles.
-% Beamer's \section is for slide navigation, so keep a dedicated poster counter.
-\newcounter{postersection}
-\renewcommand{\thepostersection}{\Roman{postersection}}
-% Map the custom Beamer poster counter to the built-in section reference type.
-\zcsetup{cap,countertype={postersection=section}}
-\newenvironment{posterblock}[1]{%
-  \refstepcounter{postersection}%
-  \begin{block}{\thepostersection.\ #1}%
-}{\end{block}}
-\newenvironment{posteralertblock}[1]{%
-  \refstepcounter{postersection}%
-  \begin{alertblock}{\thepostersection.\ #1}%
-}{\end{alertblock}}
+% Native Beamer section counter, native block and alertblock environments.
+% Section headings and zref-clever use the same uppercase Roman numbering.
+\renewcommand{\thesection}{\Roman{section}}
+\zcsetup{cap,abbrev}
 
 % Shared heading geometry: explicit vertical rule avoids an extra font-sized
 % baseline between the heading and its separator line.
@@ -274,7 +275,7 @@
            \noindent\colorbox{white}{%
              \parbox[c][\dimexpr\PosterNumberBoxHeight+\PosterNumberBoxGrow\relax][c]{\linewidth}{%
                \centering\PosterNumberFont\bfseries\color{black}%
-               Poster No.\ \PosterNumber\par}%
+               Poster No.:\ \PosterNumber\par}%
            }\par}%
           \vspace{\PosterNumberLogoGap}%
           \noindent\makebox[\linewidth][c]{\PosterHeaderLogo{\linewidth}}%

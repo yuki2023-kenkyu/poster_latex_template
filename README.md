@@ -113,7 +113,9 @@ A0_Portrait_Poster/
 
 ## Sectionの自動付番とTableの表示（2026-11-18）
 
-- 本文のSectionは `posterblock` と `posteralertblock` 環境で記述します．見出しには番号を含めず，左列→右列の `main.tex` 読込順に `I.`，`II.`，`III.`，`IV.` が自動付番されます．例：`\\begin{posterblock}{Background and Motivation}`．本文ファイルごとに番号を手書きする必要はありません．
+- 本文のSectionは 標準の `\section`・`block`・`alertblock`で記述します．見出しには番号を含めず，左列→右列の `main.tex` 読込順に `I.`，`II.`，`III.`，`IV.` が自動付番されます．例：`\\section{Background and Motivation}
+\label{sec:background}
+\begin{block}{\thesection.\ \insertsectionhead}`．本文ファイルごとに番号を手書きする必要はありません．
 - 引用は **`\\cite{文献キー}` だけ**を使用します．`\\postercite` のエイリアスと使われていない `\\posterciteinline` を削除しました．Reference帯の全著者名等の専用書誌処理は維持します．
 - TableはAPSの[Style Basics](https://journals.aps.org/authors/style-basics)に基づき，**TABLE I.** の大文字ローマ数字，表の上の `\\caption`，見出し下の1本の水平線，縦罫線なし，単位を付した列名を標準の `table`・`tabular`・`\\hline` で表現します．`documents/results.tex` は測定値ではない例示データを使用しています．
 - 図と表のキャプションは同じBeamerの標準 `\\caption` を使い，列幅内で中央揃えします．TableとFigureの番号カウンタは独立しています．
@@ -122,13 +124,14 @@ A0_Portrait_Poster/
 ## zref-clever による相互参照（2026-11-18）
 
 通常の `\label{...}` と `\zcref{...}` を使用します．追加の独自参照マクロはありません．
-`postersection` カウンタを `section` 型へ対応付けたため，`Section I`，`Section II` と自動表示されます．FigureとTableの参照はそれぞれ `Figure 1`，`Table I` です．
+Beamer標準の `section` カウンタを使用するため，`Section I`，`Section II` と自動表示されます．FigureとTableの参照はそれぞれ文中で `Fig. 1`，`Table I` です．
 
 ```latex
-\begin{posterblock}{Background and Motivation}
+\section{Background and Motivation}
 \label{sec:background}
+\begin{block}{\thesection.\ \insertsectionhead}
 See \zcref{sec:methods}.
-\end{posterblock}
+\end{block}
 
 \begin{figure}
   \centering
@@ -153,7 +156,7 @@ See \zcref{sec:methods}.
 Results are shown in \zcref{fig:example,tab:example}.
 ```
 
-Sectionラベルは環境開始直後，Figure/Tableラベルは `\caption` の直後に置きます．
+Sectionラベルは `\section` の直後，Figure/Tableラベルは `\caption` の直後に置きます．
 数式には `\begin{equation}\label{eq:name}...\end{equation}` と `\zcref{eq:name}` を使用できます．
 前方参照は `latexmk` が必要に応じて再実行し解決します．
 TeX Live 2025 の `zref-clever` で動作確認しています．
@@ -164,3 +167,41 @@ TeX Live 2025 の `zref-clever` で動作確認しています．
 - `documents/results.tex` の標準 `table` / `tabular` は，表の上下を `\hline\hline`，列見出し下を `\hline`，縦罫線なしとします（APS/PRDの単純な表の基本形）．
 - 番号表示時は左列の番号・ロゴを `\PosterHeaderLeftRaise` で上へ移動し，番号とロゴの間隔を `\PosterNumberLogoGap` で調整します．右側のタイトル・著者・所属は `\PosterHeaderRightBalanceRaise` と `\PosterHeaderRightBalanceGap` を適用し，両領域の上下余白を近づけています．
 - **ポスター番号非表示時は，右側テキストの位置と行間を変更しません．** 追加調整は `\ifPosterShowNumber` の場合だけ有効です．主ヘッダ116 mm・本文40 pt・既存フォントサイズ・ロゴ寸法は変更しません．
+
+## Tableの二重罫線とPRD Figureキャプション（2026-11-18）
+
+- APS *Physical Review Style and Notation Guide*（[公式PDF](https://cdn.journals.aps.org/files/styleguide-pr.pdf)，Tables pp. 9–10，Figure captions p. 13）を参照．
+- Tableの上下は `\hline\hline`，見出し下は `\hline`．線幅は `poster-config.tex` の `\PosterTableRuleWidth`（初期値1.5 pt），二重線の線間隔は `\PosterTableDoubleRuleSep`（初期値6 pt）で変更できます．TeX標準の `table`・`tabular` のままで，Table環境内にのみ設定を適用します．
+- Figureキャプションは，図の下の `\caption{...}` により `FIG. 1. ...` の大文字略称＋アラビア数字＋ピリオドで出力します．Tableキャプションは表の上に `TABLE I. ...`．両者とも黒系本文色に統一し，中央揃えを維持します．
+- 実際の研究図では，キャプション単体で図を理解できるよう，未定義の記号・略語・パネルを説明してください．プレースホルダーのキャプション文章はPRDに準拠した科学的説明ではありません．
+- この調整は **ポスター向けの視認性調整**です．APS/PRDの版面レイアウトや字体を完全再現するものではありません．
+
+## APS本文中の相互参照表記（2026-11-18）
+
+- Figureキャプションは `FIG. 1.`，本文中は `Fig. 1`（文頭では `Figure 1`）です．Tableキャプションは `TABLE I.`，本文は `Table I`．
+- `posterstyle.sty` で `\zcsetup{cap,abbrev}` を設定します．通常の文章中は `\zcref{fig:results}`，文頭は `\zcref[S]{fig:results}` を使用します．
+- 数式は文中 `Eq. (1)`，文頭 `Equation (1)` に対応します．
+- Sectionは `Sec. II` 等の略記と，文頭 `Section II` を使い分けます．
+- キャプションの表示規則と本文の相互参照規則は独立しています．
+
+## Native sections, Poster No., TikZ (2026-11-18)
+
+- Use native `\section{...}`, `\label{sec:...}`, `\begin{block}{\thesection.\ \insertsectionhead}` and `\begin{alertblock}{...}`. Native section numbering is uppercase Roman and supports `\zcref{sec:...}`. The custom `postersection` counter, `posterblock` and `posteralertblock` environments have been removed.
+- Poster label is `Poster No.: P66`. The existing number visibility toggle remains supported.
+- TikZ is loaded in `posterstyle.sty`; use native `\begin{tikzpicture}` within `documents/*.tex` or a `figure`. No new package or custom figure command is required.
+
+```latex
+\section{Data and Methods}
+\label{sec:methods}
+\begin{block}{\thesection.\ \insertsectionhead}
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,0) -- (2,0) node[right] {$z$};
+      \draw[->] (0,0) -- (0,1) node[above] {$H(z)$};
+    \end{tikzpicture}
+    \caption{Schematic illustration.}
+    \label{fig:tikz}
+  \end{figure}
+\end{block}
+```
