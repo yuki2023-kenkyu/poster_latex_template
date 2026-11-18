@@ -148,7 +148,24 @@ Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`ali
 \end{figure}
 ```
 
-図とキャプションは列幅内で中央揃えになります．現行スタイルではキャプションが **`FIG. 1.`** の形式で図の下に表示されます．ラベルは `\caption` の直後に置いてください．
+図は列幅内で中央揃えになります．キャプションは **`FIG. 1.`** の形式で図の下に表示され，短い1行は中央揃え，複数行は番号ラベル幅に合わせてぶら下げインデントされます（折り返し行は本文の先頭位置に揃います）．ラベルは `\caption` の直後に置いてください．
+
+### 横並びの部分図（subfig）
+
+部分図 `(a)`，`(b)` を使う場合は，`main.tex` のプリアンブルで `\usepackage[caption=false]{subfig}` を読み込みます．追加のキャプション設定は不要です．共通スタイルが `subfig` の読み込みを検知し，`\PosterCaptionFont` に合わせた文字サイズと **ぶら下げインデント** を適用します．部分図ラベル `(a)` の後の説明文に，2行目以降の先頭を揃えます．
+
+```latex
+\begin{figure}
+  \centering
+  \subfloat[First part of the result.\label{fig:first}]{%
+    \includegraphics[width=.48\linewidth]{figures/first.pdf}}%
+  \hspace{.01\linewidth}%
+  \subfloat[Second part of the result.\label{fig:second}]{%
+    \includegraphics[width=.48\linewidth]{figures/second.pdf}}
+  \caption{Comparison of the two results.}
+  \label{fig:comparison}
+\end{figure}
+```
 
 **TikZ** はすでに読み込み済みです．`documents/*.tex` 内，または `figure` 環境内で標準の `tikzpicture` をそのまま使用できます．
 
@@ -166,7 +183,7 @@ Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`ali
 
 ### Table（APS/PRDに沿った表記）
 
-標準の `table` と `tabular` を使用し，キャプションは表の**上**に配置します．表番号は大文字ローマ数字で **`TABLE I.`** の形式です．簡単な表の罫線は，上下を二重線（`\hline\hline`），見出し直下を単線（`\hline`）とし，縦罫線は使用しません．
+標準の `table` と `tabular` を使用し，キャプションは表の**上**に配置します．表番号は大文字ローマ数字で **`TABLE I.`** の形式です．簡単な表の罫線は，上下を二重線（`\hline\hline`），見出し直下を単線（`\hline`）とし，縦罫線は使用しません．TABLEキャプションもFIGキャプションと同様に，複数行では説明文の開始位置に折り返しを揃えます．
 
 ```latex
 \begin{table}
@@ -214,11 +231,10 @@ are compared in \zcref{fig:expansion} and \zcref{tab:mock}.
 文献は `references.bib` に追加し，本文では**標準の `\cite{key}`** のみを使用します．
 
 ```latex
-The data are compared with a reference cosmology.
-\cite{aghanim2020}
+The data are compared with a reference cosmology \cite{aghanim2020}.
 ```
 
-現在の `\cite` は，**独立した行・右寄せ・小さめの文字**で，例：`[Aghanim et al., A&A 641, A6 (2020)]` の形式になります．通常のインライン引用ではないため，文章の途中に置くのではなく，引用する説明の直後に配置してください．
+現在の `\cite` は，文章中にそのまま挿入される**インライン引用**です．表示形式（例：`[Aghanim et al., A&A 641, A6 (2020)]`）と小さめの文字サイズは維持します．文献の `.bib` に `eprint`（arXiv識別子）と `eprinttype={arxiv}` がある場合，**角括弧を含む引用全体**が `https://arxiv.org/abs/<eprint>` へのリンクになります．複数文献の場合はそれぞれ個別のリンクになります．arXiv情報のない文献はリンクなしで表示し，存在しない識別子を推測しません．
 
 ヘッダのReference帯は本文引用と別で，`\PosterFeaturedPaperKey` に指定したキーの**著者全員，雑誌，巻，論文番号，年，登録済みならarXiv番号**を `.bib` 情報から取得します．そのため，`references.bib` の入力内容も確認してください．
 
