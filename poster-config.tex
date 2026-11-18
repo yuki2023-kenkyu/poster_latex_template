@@ -7,11 +7,11 @@
 \newcommand{\PosterColorTheme}{navy}
 
 % Typography presets: compact (90%), standard (100%), large (110%).
-% In the standard preset, BODY TEXT = 40 pt (at physical poster size).
+% In the standard preset, BODY TEXT = 44 pt (at physical poster size).
 \newcommand{\PosterFontLevel}{standard}
 
 % Base font sizes in points (before applying the font-level preset).
-% Body 40 pt is the requested PowerPoint-equivalent size at standard level.
+% Body 44 pt is used at the standard font level.
 % You can override individual roles here without changing posterstyle.sty.
 \newcommand{\PosterNumberPt}{51}
 \newcommand{\PosterTitlePt}{58}
@@ -151,3 +151,6 @@
 \setlength{\PosterAbstractFrameRule}{1pt}
 \newlength{\PosterAbstractRaise}
 \setlength{\PosterAbstractRaise}{26mm}
+% Space for the Abstract label set into the center of the top border.
+\newlength{\PosterAbstractLabelInset}
+\setlength{\PosterAbstractLabelInset}{8mm}

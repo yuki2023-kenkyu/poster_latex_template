@@ -6,6 +6,8 @@
 % Change colors, font levels, header content, and footer in this file.
 \input{poster-config.tex}
 \usepackage[english]{babel}
+% Scalable Latin Modern math fonts must be initialized before bm.
+\usepackage{lmodern}
 \usepackage{amsmath,amssymb,bm}
 \usepackage{csquotes}
 \usepackage[
@@ -29,16 +31,28 @@
 \vspace*{\PosterHeaderTopInset}
 \PosterHeader
 
-% Abstract only: bordered, single-column, and closer to the Reference band.
-\vspace*{-\PosterAbstractRaise}
+% Abstract: the title interrupts the center of the existing top border.
+% Keep the content in documents/abstract.tex without a Section heading.
+\vspace*{\dimexpr-\PosterAbstractRaise+\PosterAbstractLabelInset\relax}
 \begingroup
-  \setlength{\fboxsep}{\PosterAbstractFramePadding}%
-  \setlength{\fboxrule}{\PosterAbstractFrameRule}%
-  \noindent\fcolorbox{PosterAccent}{white}{%
-    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
-      \PosterBodyFont\input{documents/abstract.tex}\par%
-    \end{minipage}%
-  }%
+  \noindent\begin{tikzpicture}[baseline=(abstractframe.south)]
+    \node[
+      draw=PosterAccent,
+      line width=\PosterAbstractFrameRule,
+      fill=white,
+      inner sep=\PosterAbstractFramePadding,
+      outer sep=0pt,
+      anchor=north west
+    ] (abstractframe) at (0,0) {%
+      \begin{minipage}{\dimexpr\linewidth-2\PosterAbstractFramePadding-2\PosterAbstractFrameRule\relax}%
+        \vspace*{\PosterAbstractLabelInset}%
+        \PosterBodyFont\color{PosterText}\input{documents/abstract.tex}\par%
+      \end{minipage}%
+    };
+    \node[overlay,anchor=center,fill=white,text=PosterAccent,
+          font=\PosterBlockTitleFont,inner xsep=6mm,inner ysep=0pt]
+      at (abstractframe.north) {Abstract};
+  \end{tikzpicture}%
   \par
 \endgroup
 \vspace{\PosterBlockGap}
