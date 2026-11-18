@@ -124,13 +124,12 @@ A0_Portrait_Poster/
 ## zref-clever による相互参照（2026-11-18）
 
 通常の `\label{...}` と `\zcref{...}` を使用します．追加の独自参照マクロはありません．
-Beamer標準の `section` カウンタを使用するため，`Section I`，`Section II` と自動表示されます．FigureとTableの参照はそれぞれ `Figure 1`，`Table I` です．
+Beamer標準の `section` カウンタを使用するため，`Section I`，`Section II` と自動表示されます．FigureとTableの参照はそれぞれ文中で `Fig. 1`，`Table I` です．
 
 ```latex
 \section{Background and Motivation}
 \label{sec:background}
 \begin{block}{\thesection.\ \insertsectionhead}
-\label{sec:background}
 See \zcref{sec:methods}.
 \end{block}
 
@@ -157,7 +156,7 @@ See \zcref{sec:methods}.
 Results are shown in \zcref{fig:example,tab:example}.
 ```
 
-Sectionラベルは環境開始直後，Figure/Tableラベルは `\caption` の直後に置きます．
+Sectionラベルは `\section` の直後，Figure/Tableラベルは `\caption` の直後に置きます．
 数式には `\begin{equation}\label{eq:name}...\end{equation}` と `\zcref{eq:name}` を使用できます．
 前方参照は `latexmk` が必要に応じて再実行し解決します．
 TeX Live 2025 の `zref-clever` で動作確認しています．
@@ -191,7 +190,7 @@ TeX Live 2025 の `zref-clever` で動作確認しています．
 - Poster label is `Poster No.: P66`. The existing number visibility toggle remains supported.
 - TikZ is loaded in `posterstyle.sty`; use native `\begin{tikzpicture}` within `documents/*.tex` or a `figure`. No new package or custom figure command is required.
 
-\`\`\`latex
+```latex
 \section{Data and Methods}
 \label{sec:methods}
 \begin{block}{\thesection.\ \insertsectionhead}
@@ -205,4 +204,4 @@ TeX Live 2025 の `zref-clever` で動作確認しています．
     \label{fig:tikz}
   \end{figure}
 \end{block}
-\`\`\`
+```
