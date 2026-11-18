@@ -119,10 +119,25 @@
 \setbeamercolor{enumerate item}{fg=PosterAccent}
 \setbeamercolor{enumerate subitem}{fg=PosterAccent}
 \setbeamercolor{enumerate subsubitem}{fg=PosterAccent}
+% Beamer's enumerate labels have separate fonts/templates from the list body.
+% Render ordinary, legible numeric labels in the same size as body text.
+\setbeamertemplate{enumerate items}[default]
+\setbeamerfont{enumerate item}{size=\PosterBodyFont}
+\setbeamerfont{enumerate subitem}{size=\PosterBodyFont}
+\setbeamerfont{enumerate subsubitem}{size=\PosterBodyFont}
 % Inline/display mathematics (including \bm) inherit their text color.
 \setbeamercolor{math text}{}
 \setbeamercolor{math text inlined}{parent=math text}
 \setbeamercolor{math text displayed}{parent=math text}
+% amsmath resets display-equation tags to \normalsize via \normalfont.
+% In beamerposter this is much smaller than the 44 pt poster body.
+% Keep native equation/align numbering; adjust only the tag's font size.
+\makeatletter
+\patchcmd{\maketag@@@}{\normalfont}{\normalfont\PosterBodyFont}{}{%
+  \PackageError{posterstyle}{Cannot set equation-tag font size}{%
+    Check compatibility with the installed amsmath package.}%
+}
+\makeatother
 \setbeamercolor{block title}{fg=PosterAccent,bg=white}
 \setbeamercolor{block body}{fg=PosterText,bg=white}
 \setbeamercolor{block title alerted}{fg=PosterAccent,bg=PosterAccentPale}

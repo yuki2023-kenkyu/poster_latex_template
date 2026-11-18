@@ -120,7 +120,7 @@ Section番号は **I，II，III，IV，…** と自動付番されます．強�
 
 ### 箇条書き・数式の例
 
-Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`\bm` をそのまま使用できます．入れ子の箇条書きも本文と同じ文字サイズで表示し，箇条書き記号はテーマ色に統一します．数式は周囲の文字色を継承し，数学用Latin Modernフォントを利用します．
+Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`align`，`\bm` をそのまま使用できます．入れ子のリスト本文・`enumerate` の番号ラベルは本文と同じ文字サイズになります．`enumerate` はBeamer標準の数字（`1.`，`1.1` など）で表示し，番号はテーマ色です．数式本体に加え，`equation`／`align` の自動番号も本文と同じ大きさに設定されます．数式の文字色は周囲の設定を継承します．
 
 ```latex
 \begin{itemize}
