@@ -229,7 +229,7 @@ The data are compared with a reference cosmology.
 特に確認しやすい設定：
 
 - `\PosterColorTheme`：配色．`\PosterFontLevel`：全文字倍率．`\PosterBodyPt`：Abstract本文（44 pt）．`\PosterSectionBodyPt`：Section本文（40 pt）．`\PosterBlockTitlePt`・`\PosterCaptionPt`：見出し・キャプションの基本pt値．
-- `\PosterColumnGap`・`\PosterBlockGap`：2段組のカラム間隔・Section間隔．なお，Section見出し直下の `itemize`／`enumerate` は，Beamerのリスト用余白（`\topsep` 等）が通常の文章とは異なるため，最初の行の位置がわずかに異なることがあります．
+- `\PosterColumnGap`・`\PosterBlockGap`：2段組のカラム間隔・Section間隔．Sectionの先頭に `itemize`／`enumerate` を置いた場合は，通常の文章と最初の行の高さが揃うようBeamerの最初の `\topsep` を補正します．本文途中のリストと項目間隔（`\itemsep`）は変えません．
 - `\PosterHeaderMainHeight`・`\PosterHeaderRightBalanceGap` など：ヘッダの寸法・余白．
 - `\PosterTableRuleWidth`・`\PosterTableDoubleRuleSep`：表の罫線．
 
