@@ -68,7 +68,8 @@ poster_latex_template/
 | --- | --- | --- |
 | 配色 | `\PosterColorTheme` | `navy` / `forest` / `slate` |
 | 全体フォント倍率 | `\PosterFontLevel` | `compact`（0.90）/ `standard`（1.00）/ `large`（1.10） |
-| 基本文字サイズ | `\PosterBodyPt` など | pt単位．**現行の標準設定では本文44 pt** |
+| Abstract本文 | `\PosterBodyPt` | 44 pt（従来どおり） |
+| Section本文 | `\PosterSectionBodyPt` | 40 pt（通常／強調ブロック共通） |
 | タイトル | `\PosterTitle` | 長い場合は `\\` で改行できます |
 | 発表者・共同研究者 | `\PosterPresenter`，`\PosterCoauthors` | ヘッダに表示する氏名 |
 | 所属 | `\PosterAffiliations` | 単一／複数所属の表示を切替可能 |
@@ -101,7 +102,7 @@ poster_latex_template/
 
 ## 4. Abstract・Section・2段組の編集
 
-`documents/abstract.tex` には**本文だけ**を書きます．`Abstract` は外枠の上辺中央に自動表示されるため，本文ファイルに見出しを記述しないでください． 箇条書きや数式を含める場合も，本文文字サイズ・文字色を共通スタイルから適用します．上辺のラベルと本文の余白は `poster-config.tex` の `\PosterAbstractLabelInset`（初期値 8 mm）で調整できます．独立したSection見出し・区切り線は表示しません．
+`documents/abstract.tex` には**本文だけ**を書きます．`Abstract` は外枠の上辺中央に自動表示されるため，本文ファイルに見出しを記述しないでください． 箇条書きや数式も，Abstractの本文サイズ（初期値44 pt）と文字色を継承します．上辺のラベルと本文の余白は `poster-config.tex` の `\PosterAbstractLabelInset`（初期値 8 mm）で調整できます．独立したSection見出し・区切り線は表示しません．
 
 本文のSectionには，**Beamerの標準コマンド** `\section`，`block`，`alertblock` を使用します．独自のSection環境は不要です．
 
@@ -120,7 +121,7 @@ Section番号は **I，II，III，IV，…** と自動付番されます．強�
 
 ### 箇条書き・数式の例
 
-Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`align`，`\bm` をそのまま使用できます．入れ子のリスト本文・`enumerate` の番号ラベルは本文と同じ文字サイズになります．`enumerate` はBeamer標準の数字（`1.`，`1.1` など）で表示し，番号はテーマ色です．数式本体に加え，`equation`／`align` の自動番号も本文と同じ大きさに設定されます．数式の文字色は周囲の設定を継承します．
+Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`align`，`\bm` をそのまま使用できます．入れ子のリスト本文・`enumerate` の番号ラベルは，その領域の本文サイズに従います（Abstract: 44 pt，Section: 40 pt）．`enumerate` はBeamer標準の数字（`1.`，`1.1` など）で表示し，番号はテーマ色です．数式本体に加え，`equation`／`align` の自動番号も各領域の本文サイズに追従します．数式の文字色は周囲の設定を継承します．
 
 ```latex
 \begin{itemize}
@@ -227,8 +228,8 @@ The data are compared with a reference cosmology.
 
 特に確認しやすい設定：
 
-- `\PosterColorTheme`：配色．`\PosterFontLevel`：文字倍率．`\PosterBodyPt`・`\PosterBlockTitlePt`・`\PosterCaptionPt`：本文・見出し・キャプションの基本pt値．
-- `\PosterColumnGap`・`\PosterBlockGap`：2段組のカラム間隔・Section間隔．
+- `\PosterColorTheme`：配色．`\PosterFontLevel`：全文字倍率．`\PosterBodyPt`：Abstract本文（44 pt）．`\PosterSectionBodyPt`：Section本文（40 pt）．`\PosterBlockTitlePt`・`\PosterCaptionPt`：見出し・キャプションの基本pt値．
+- `\PosterColumnGap`・`\PosterBlockGap`：2段組のカラム間隔・Section間隔．なお，Section見出し直下の `itemize`／`enumerate` は，Beamerのリスト用余白（`\topsep` 等）が通常の文章とは異なるため，最初の行の位置がわずかに異なることがあります．
 - `\PosterHeaderMainHeight`・`\PosterHeaderRightBalanceGap` など：ヘッダの寸法・余白．
 - `\PosterTableRuleWidth`・`\PosterTableDoubleRuleSep`：表の罫線．
 

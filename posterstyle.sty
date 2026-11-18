@@ -62,7 +62,12 @@
 \newcommand{\PosterCoauthorFont}{\PosterSetFontRatio{\PosterCoauthorPt}{1.10}}
 \newcommand{\PosterAffiliationFont}{\PosterSetFontRatio{\PosterAffiliationPt}{1.10}}
 \newcommand{\PosterBlockTitleFont}{\PosterSetFontRatio{\PosterBlockTitlePt}{1.18}\bfseries}
+% The existing PosterBodyFont remains the Abstract-body font.
 \newcommand{\PosterBodyFont}{\PosterSetFontRatio{\PosterBodyPt}{1.225}}
+\newcommand{\PosterSectionBodyFont}{\PosterSetFontRatio{\PosterSectionBodyPt}{1.225}}
+% List labels and equation numbers follow their current content region.
+% The local binding is changed only inside normal/alerted Section bodies.
+\let\PosterActiveBodyFont\PosterBodyFont
 \newcommand{\PosterCaptionFont}{\PosterSetFontRatio{\PosterCaptionPt}{1.22}}
 \newcommand{\PosterReferenceFont}{\PosterSetFontRatio{\PosterReferencePt}{1.26}}
 \newcommand{\PosterFeaturedPaperFont}{\PosterSetFontRatio{\PosterFeaturedPaperPt}{1.20}}
@@ -106,9 +111,9 @@
 \setbeamertemplate{footline}{}
 \setbeamercolor{normal text}{fg=PosterText,bg=white}
 % Keep all three Beamer list levels aligned with the surrounding body font.
-\setbeamerfont{itemize/enumerate body}{size=\PosterBodyFont}
-\setbeamerfont{itemize/enumerate subbody}{size=\PosterBodyFont}
-\setbeamerfont{itemize/enumerate subsubbody}{size=\PosterBodyFont}
+\setbeamerfont{itemize/enumerate body}{size=\PosterActiveBodyFont}
+\setbeamerfont{itemize/enumerate subbody}{size=\PosterActiveBodyFont}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\PosterActiveBodyFont}
 \setbeamercolor{itemize/enumerate body}{fg=PosterText}
 \setbeamercolor{itemize/enumerate subbody}{fg=PosterText}
 \setbeamercolor{itemize/enumerate subsubbody}{fg=PosterText}
@@ -122,18 +127,18 @@
 % Beamer's enumerate labels have separate fonts/templates from the list body.
 % Render ordinary, legible numeric labels in the same size as body text.
 \setbeamertemplate{enumerate items}[default]
-\setbeamerfont{enumerate item}{size=\PosterBodyFont}
-\setbeamerfont{enumerate subitem}{size=\PosterBodyFont}
-\setbeamerfont{enumerate subsubitem}{size=\PosterBodyFont}
+\setbeamerfont{enumerate item}{size=\PosterActiveBodyFont}
+\setbeamerfont{enumerate subitem}{size=\PosterActiveBodyFont}
+\setbeamerfont{enumerate subsubitem}{size=\PosterActiveBodyFont}
 % Inline/display mathematics (including \bm) inherit their text color.
 \setbeamercolor{math text}{}
 \setbeamercolor{math text inlined}{parent=math text}
 \setbeamercolor{math text displayed}{parent=math text}
 % amsmath resets display-equation tags to \normalsize via \normalfont.
-% In beamerposter this is much smaller than the 44 pt poster body.
+% In beamerposter this is much smaller than the content-region body font.
 % Keep native equation/align numbering; adjust only the tag's font size.
 \makeatletter
-\patchcmd{\maketag@@@}{\normalfont}{\normalfont\PosterBodyFont}{}{%
+\patchcmd{\maketag@@@}{\normalfont}{\normalfont\PosterActiveBodyFont}{}{%
   \PackageError{posterstyle}{Cannot set equation-tag font size}{%
     Check compatibility with the installed amsmath package.}%
 }
@@ -145,9 +150,9 @@
 \setbeamercolor{alerted text}{fg=PosterAccent}
 \setbeamerfont{normal text}{size=\PosterBodyFont}
 \setbeamerfont{block title}{size=\PosterBlockTitleFont}
-\setbeamerfont{block body}{size=\PosterBodyFont}
+\setbeamerfont{block body}{size=\PosterSectionBodyFont}
 \setbeamerfont{block title alerted}{size=\PosterBlockTitleFont}
-\setbeamerfont{block body alerted}{size=\PosterBodyFont}
+\setbeamerfont{block body alerted}{size=\PosterSectionBodyFont}
 \setbeamertemplate{itemize item}{\raisebox{0.10ex}{\textbullet}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.24em}
@@ -173,6 +178,7 @@
   \end{beamercolorbox}%
   \vspace{\PosterRuleBodyGap}%
   \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block body}%
+    \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body}%
 }
 \defbeamertemplate{block end}{poster-ruled}{%
@@ -191,6 +197,7 @@
     \PosterHeadingRule
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block body alerted}%
+    \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body alerted}%
 }
 \defbeamertemplate{block alerted end}{poster-highlight}{%
