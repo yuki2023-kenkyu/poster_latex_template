@@ -105,6 +105,39 @@
 \setbeamertemplate{headline}{}
 \setbeamertemplate{footline}{}
 \setbeamercolor{normal text}{fg=PosterText,bg=white}
+% Keep all three Beamer list levels aligned with the surrounding body font.
+\setbeamerfont{itemize/enumerate body}{size=\PosterBodyFont}
+\setbeamerfont{itemize/enumerate subbody}{size=\PosterBodyFont}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\PosterBodyFont}
+\setbeamercolor{itemize/enumerate body}{fg=PosterText}
+\setbeamercolor{itemize/enumerate subbody}{fg=PosterText}
+\setbeamercolor{itemize/enumerate subsubbody}{fg=PosterText}
+\setbeamercolor{structure}{fg=PosterAccent}
+\setbeamercolor{itemize item}{fg=PosterAccent}
+\setbeamercolor{itemize subitem}{fg=PosterAccent}
+\setbeamercolor{itemize subsubitem}{fg=PosterAccent}
+\setbeamercolor{enumerate item}{fg=PosterAccent}
+\setbeamercolor{enumerate subitem}{fg=PosterAccent}
+\setbeamercolor{enumerate subsubitem}{fg=PosterAccent}
+% Beamer's enumerate labels have separate fonts/templates from the list body.
+% Render ordinary, legible numeric labels in the same size as body text.
+\setbeamertemplate{enumerate items}[default]
+\setbeamerfont{enumerate item}{size=\PosterBodyFont}
+\setbeamerfont{enumerate subitem}{size=\PosterBodyFont}
+\setbeamerfont{enumerate subsubitem}{size=\PosterBodyFont}
+% Inline/display mathematics (including \bm) inherit their text color.
+\setbeamercolor{math text}{}
+\setbeamercolor{math text inlined}{parent=math text}
+\setbeamercolor{math text displayed}{parent=math text}
+% amsmath resets display-equation tags to \normalsize via \normalfont.
+% In beamerposter this is much smaller than the 44 pt poster body.
+% Keep native equation/align numbering; adjust only the tag's font size.
+\makeatletter
+\patchcmd{\maketag@@@}{\normalfont}{\normalfont\PosterBodyFont}{}{%
+  \PackageError{posterstyle}{Cannot set equation-tag font size}{%
+    Check compatibility with the installed amsmath package.}%
+}
+\makeatother
 \setbeamercolor{block title}{fg=PosterAccent,bg=white}
 \setbeamercolor{block body}{fg=PosterText,bg=white}
 \setbeamercolor{block title alerted}{fg=PosterAccent,bg=PosterAccentPale}
@@ -115,7 +148,7 @@
 \setbeamerfont{block body}{size=\PosterBodyFont}
 \setbeamerfont{block title alerted}{size=\PosterBlockTitleFont}
 \setbeamerfont{block body alerted}{size=\PosterBodyFont}
-\setbeamertemplate{itemize item}{\raisebox{0.18ex}{\scriptsize\textbullet}}
+\setbeamertemplate{itemize item}{\raisebox{0.10ex}{\textbullet}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.24em}
 

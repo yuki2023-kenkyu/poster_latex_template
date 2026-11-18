@@ -101,7 +101,7 @@ poster_latex_template/
 
 ## 4. Abstract・Section・2段組の編集
 
-`documents/abstract.tex` には**本文だけ**を書きます．見出しの「Abstract」や区切り線を追加する必要はなく，外枠は `main.tex` 側で付与されます．
+`documents/abstract.tex` には**本文だけ**を書きます．`Abstract` は外枠の上辺中央に自動表示されるため，本文ファイルに見出しを記述しないでください． 箇条書きや数式を含める場合も，本文文字サイズ・文字色を共通スタイルから適用します．上辺のラベルと本文の余白は `poster-config.tex` の `\PosterAbstractLabelInset`（初期値 8 mm）で調整できます．独立したSection見出し・区切り線は表示しません．
 
 本文のSectionには，**Beamerの標準コマンド** `\section`，`block`，`alertblock` を使用します．独自のSection環境は不要です．
 
@@ -117,6 +117,20 @@ Describe the data, assumptions, and analysis method.
 Section番号は **I，II，III，IV，…** と自動付番されます．強調背景を付けたい場合は `block` を `alertblock` に置き換えます．
 
 新しいSectionを作るには，`documents/new-section.tex` を作成し，`main.tex` の目的のカラム内に `\input{documents/new-section.tex}` を追加します．**番号は`main.tex`の読み込み順（左列の上から下，次に右列の上から下）**で進みます．一方の列だけ本文が多い場合は，自動で高さをそろえたり，次ページへ送ったりしません．
+
+### 箇条書き・数式の例
+
+Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`align`，`\bm` をそのまま使用できます．入れ子のリスト本文・`enumerate` の番号ラベルは本文と同じ文字サイズになります．`enumerate` はBeamer標準の数字（`1.`，`1.1` など）で表示し，番号はテーマ色です．数式本体に加え，`equation`／`align` の自動番号も本文と同じ大きさに設定されます．数式の文字色は周囲の設定を継承します．
+
+```latex
+\begin{itemize}
+  \item We reconstruct $\bm{H}(z)$ from the observations.
+  \item The parameters satisfy
+  \begin{equation}
+    \bm{\theta}^{\mathsf T}\bm{\theta} > 0.
+  \end{equation}
+\end{itemize}
+```
 
 ## 5. 図・TikZ・Table
 
