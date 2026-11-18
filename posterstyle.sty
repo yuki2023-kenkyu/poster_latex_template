@@ -77,9 +77,9 @@
 % ---- Beamer typography and section dividers ----
 \setbeamersize{text margin left=\PosterMargin,text margin right=\PosterMargin}
 \setbeamertemplate{navigation symbols}{}
-% APS/PRD-inspired native captions: center the caption and use a period.
-% Table numbering uses uppercase Roman numerals and the TABLE label.
-% The same centered caption template remains valid for figures.
+% APS/PRD captions: FIG. 1. / TABLE I., with hanging indentation.
+% Keep short one-line captions centered; align wrapped lines with the text
+% after the label for longer Figure and Table captions.
 \renewcommand{\thetable}{\Roman{table}}
 % Preserve uppercase TABLE when babel initializes its English caption names.
 % APS guide: TABLE I. and FIG. 1. (uppercase name, trailing periods).
@@ -88,16 +88,42 @@
   \renewcommand{\tablename}{TABLE}%
   \renewcommand{\figurename}{FIG.}%
 }
+% The label is measured with the same font/color used for rendering.
+% Short captions remain centered; multi-line captions use a hanging indent.
+\newsavebox{\PosterCaptionLabelBox}
+\newsavebox{\PosterCaptionFullBox}
 \defbeamertemplate{caption}{poster-prd}{%
-  \centering
-  {\usebeamercolor[fg]{caption name}\usebeamerfont*{caption name}%
-   \insertcaptionname~\insertcaptionnumber
-   \usebeamertemplate{caption label separator}}%
-  \insertcaption\par
+  \begingroup
+  \usebeamerfont*{caption}%
+  \usebeamercolor[fg]{caption}%
+  \sbox{\PosterCaptionLabelBox}{%
+    \usebeamercolor[fg]{caption name}\usebeamerfont*{caption name}%
+    \insertcaptionname~\insertcaptionnumber
+    \usebeamertemplate{caption label separator}\space}%
+  \sbox{\PosterCaptionFullBox}{%
+    \usebox{\PosterCaptionLabelBox}\insertcaption}%
+  \ifdim\wd\PosterCaptionFullBox<\linewidth
+    \centering\usebox{\PosterCaptionFullBox}\par
+  \else
+    \noindent\hangindent=\wd\PosterCaptionLabelBox\hangafter=1
+    \usebox{\PosterCaptionLabelBox}\insertcaption\par
+  \fi
+  \endgroup
 }
 \setbeamertemplate{caption label separator}[period]
 \setbeamertemplate{caption}[poster-prd]
 \setbeamerfont{caption}{size=\PosterCaptionFont}
+% subfig is optional. When loaded in the preamble, set its captions
+% at begin-document (after package loading) without changing Beamer captions.
+% format=hang aligns wrapped lines under the text after (a)/(b).
+\AtBeginDocument{%
+  \@ifpackageloaded{subfig}{%
+    \DeclareCaptionFont{postersub}{\PosterCaptionFont}%
+    \captionsetup[subfloat]{%
+      font=postersub,format=hang,justification=raggedright,
+      singlelinecheck=false}%
+  }{}%
+}
 % Use the normal text color for PRD-like captions instead of muted gray.
 \setbeamercolor{caption}{fg=PosterText}
 \setbeamercolor{caption name}{fg=PosterText}
@@ -284,20 +310,47 @@
   \iffieldundef{eprint}{}{%
     \setunit{\addspace}%
     \printtext[brackets]{%
-      \iffieldundef{eprinttype}{}{\printfield{eprinttype}\addcolon}%
-      \printfield[postereprint]{eprint}%
+      % BibLaTeX maps legacy archivePrefix/primaryClass to
+      % eprinttype/eprintclass via Biber. The type may be arXiv or arxiv.
+      \ifboolexpr{%
+        test {\iffieldequalstr{eprinttype}{arxiv}} or
+        test {\iffieldequalstr{eprinttype}{arXiv}}%
+      }{%
+        % Only the arXiv identifier is clickable, not the class or brackets.
+        \href{https://arxiv.org/abs/\thefield{eprint}}{%
+          arXiv:\printfield[postereprint]{eprint}}%
+        % Literal [] prevents nested BibLaTeX brackets becoming parentheses.
+        \iffieldundef{eprintclass}{}{[\thefield{eprintclass}]}%
+      }{%
+        % Do not fabricate an arXiv link for other eprint types.
+        \iffieldundef{eprinttype}{}{\printfield{eprinttype}\addcolon}%
+        \printfield[postereprint]{eprint}%
+      }%
     }%
   }%
 }
 \DeclareCiteCommand{\postercitebare}
   {} {\usebibmacro{poster:publication-full}} {\addsemicolon\space} {}
-% Standard \cite{key} provides VS Code bibliography-key completion.
-% The output is a separate, right-aligned and muted reference line.
+% Inline standard \cite{key} with an arXiv link around the entire
+% rendered citation when the .bib entry contains an arXiv eprint.
+% For entries without an arXiv identifier, keep plain text (no fake link).
+% Each entry has its own link, including when citing multiple keys.
+\newbibmacro*{poster:cite-entry}{%
+  \iffieldundef{eprint}
+    {\printtext[brackets]{\usebibmacro{poster:publication}}}
+    {\iffieldundef{eprinttype}
+      {\href{https://arxiv.org/abs/\thefield{eprint}}{%
+         \printtext[brackets]{\usebibmacro{poster:publication}}}}
+      {\iffieldequalstr{eprinttype}{arxiv}
+        {\href{https://arxiv.org/abs/\thefield{eprint}}{%
+           \printtext[brackets]{\usebibmacro{poster:publication}}}}
+        {\printtext[brackets]{\usebibmacro{poster:publication}}}}}%
+}
 \DeclareCiteCommand{\cite}
-  {\par\begingroup\raggedleft\PosterReferenceFont\color{PosterMuted}[}
-  {\usebibmacro{poster:publication}}
+  {\begingroup\PosterReferenceFont\color{PosterMuted}}
+  {\usebibmacro{poster:cite-entry}}
   {\addsemicolon\space}
-  {]\par\endgroup}
+  {\endgroup}
 
 % ---- Tight navy header, number/Reference optional ----
 \newcommand{\PosterHeaderLogo}[1]{%
