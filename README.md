@@ -148,7 +148,7 @@ Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`ali
 \end{figure}
 ```
 
-図は列幅内で中央揃えになります．キャプションは **`FIG. 1.`** の形式で図の下に表示され，短い1行は中央揃え，複数行は番号ラベル幅に合わせてぶら下げインデントされます（折り返し行は本文の先頭位置に揃います）．ラベルは `\caption` の直後に置いてください．
+図は列幅内で中央揃えになります．キャプションは **`FIG. 1.`** の形式で図の下に表示され，短い1行は中央揃え，複数行は**`FIG.` の先頭に折り返しを揃えます**．キャプションの表示幅はSection本文幅から左右それぞれ `\PosterCaptionHorizontalInset`（初期値5 mm）を差し引き，ブロックの端に接しないようにします．ラベルは `\caption` の直後に置いてください．
 
 ### 横並びの部分図（subfig）
 
@@ -183,7 +183,7 @@ Abstractや通常／強調Sectionで `itemize`，`enumerate`，`equation`，`ali
 
 ### Table（APS/PRDに沿った表記）
 
-標準の `table` と `tabular` を使用し，キャプションは表の**上**に配置します．表番号は大文字ローマ数字で **`TABLE I.`** の形式です．簡単な表の罫線は，上下を二重線（`\hline\hline`），見出し直下を単線（`\hline`）とし，縦罫線は使用しません．TABLEキャプションもFIGキャプションと同様に，複数行では説明文の開始位置に折り返しを揃えます．
+標準の `table` と `tabular` を使用し，キャプションは表の**上**に配置します．表番号は大文字ローマ数字で **`TABLE I.`** の形式です．簡単な表の罫線は，上下を二重線（`\hline\hline`），見出し直下を単線（`\hline`）とし，縦罫線は使用しません．TABLEキャプションもFIGキャプションと同様に，複数行では**`TABLE` の先頭に折り返しを揃え**，同じ左右余白を適用します．
 
 ```latex
 \begin{table}
@@ -247,7 +247,7 @@ The data are compared with a reference cosmology \cite{aghanim2020}.
 - `\PosterColorTheme`：配色．`\PosterFontLevel`：全文字倍率．`\PosterBodyPt`：Abstract本文（44 pt）．`\PosterSectionBodyPt`：Section本文（40 pt）．`\PosterBlockTitlePt`・`\PosterCaptionPt`：見出し・キャプションの基本pt値．
 - `\PosterColumnGap`・`\PosterBlockGap`：2段組のカラム間隔・Section間隔．Sectionの先頭が `itemize`／`enumerate` の場合のみ，Beamerの空の段落ボックスと先頭リストの余分な縦方向の空きを調整し，通常文章と開始位置を揃えます．段落処理の強制や `\everypar` の変更は行いません．本文途中・入れ子のリスト，項目間隔（`\itemsep`）は従来どおりです．
 - `\PosterHeaderMainHeight`・`\PosterHeaderRightBalanceGap` など：ヘッダの寸法・余白．
-- `\PosterTableRuleWidth`・`\PosterTableDoubleRuleSep`：表の罫線．
+- `\PosterTableRuleWidth`・`\PosterTableDoubleRuleSep`：表の罫線．`\PosterCaptionHorizontalInset`：FIG・TABLEキャプションの左右余白（初期値5 mm）．
 
 用紙全体は固定1ページです．長文や大きな図を追加しても**自動縮小・改ページされない**ため，本文とフッタの重なり，キャプションの収まり，余白をPDFで確認してください．
 

@@ -77,9 +77,10 @@
 % ---- Beamer typography and section dividers ----
 \setbeamersize{text margin left=\PosterMargin,text margin right=\PosterMargin}
 \setbeamertemplate{navigation symbols}{}
-% APS/PRD captions: FIG. 1. / TABLE I., with hanging indentation.
-% Keep short one-line captions centered; align wrapped lines with the text
-% after the label for longer Figure and Table captions.
+% APS/PRD captions: FIG. 1. / TABLE I.
+% Single-line captions are centered. Multi-line captions align all lines
+% at the FIG./TABLE label's start and use an inset text area.
+% Subfigure captions retain their separate hanging indentation.
 \renewcommand{\thetable}{\Roman{table}}
 % Preserve uppercase TABLE when babel initializes its English caption names.
 % APS guide: TABLE I. and FIG. 1. (uppercase name, trailing periods).
@@ -88,8 +89,8 @@
   \renewcommand{\tablename}{TABLE}%
   \renewcommand{\figurename}{FIG.}%
 }
-% The label is measured with the same font/color used for rendering.
-% Short captions remain centered; multi-line captions use a hanging indent.
+% Measure the full caption for one-line centering. Long captions use
+% ordinary paragraph alignment inside a centered, slightly inset box.
 \newsavebox{\PosterCaptionLabelBox}
 \newsavebox{\PosterCaptionFullBox}
 \defbeamertemplate{caption}{poster-prd}{%
@@ -102,12 +103,15 @@
     \usebeamertemplate{caption label separator}\space}%
   \sbox{\PosterCaptionFullBox}{%
     \usebox{\PosterCaptionLabelBox}\insertcaption}%
-  \ifdim\wd\PosterCaptionFullBox<\linewidth
-    \centering\usebox{\PosterCaptionFullBox}\par
-  \else
-    \noindent\hangindent=\wd\PosterCaptionLabelBox\hangafter=1
-    \usebox{\PosterCaptionLabelBox}\insertcaption\par
-  \fi
+  \centering
+  \begin{minipage}{\dimexpr\linewidth-2\PosterCaptionHorizontalInset\relax}%
+    \ifdim\wd\PosterCaptionFullBox<\linewidth
+      \centering\usebox{\PosterCaptionFullBox}\par
+    \else
+      % Normal paragraph wrapping begins at FIG./TABLE, not caption text.
+      \noindent\usebox{\PosterCaptionLabelBox}\insertcaption\par
+    \fi
+  \end{minipage}\par
   \endgroup
 }
 \setbeamertemplate{caption label separator}[period]
