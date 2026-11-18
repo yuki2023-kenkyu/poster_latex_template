@@ -205,7 +205,7 @@
   \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block body}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body}%
-    \let\beamer@firstlineitemizeunskip\PosterFixInitialList%
+    \expandafter\let\csname beamer@firstlineitemizeunskip\endcsname\PosterFixInitialList%
 }
 \defbeamertemplate{block end}{poster-ruled}{%
   \end{beamercolorbox}%
@@ -225,7 +225,7 @@
   \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block body alerted}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body alerted}%
-    \let\beamer@firstlineitemizeunskip\PosterFixInitialList%
+    \expandafter\let\csname beamer@firstlineitemizeunskip\endcsname\PosterFixInitialList%
 }
 \defbeamertemplate{block alerted end}{poster-highlight}{%
   \end{beamercolorbox}%
