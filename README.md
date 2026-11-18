@@ -164,3 +164,11 @@ TeX Live 2025 の `zref-clever` で動作確認しています．
 - `documents/results.tex` の標準 `table` / `tabular` は，表の上下を `\hline\hline`，列見出し下を `\hline`，縦罫線なしとします（APS/PRDの単純な表の基本形）．
 - 番号表示時は左列の番号・ロゴを `\PosterHeaderLeftRaise` で上へ移動し，番号とロゴの間隔を `\PosterNumberLogoGap` で調整します．右側のタイトル・著者・所属は `\PosterHeaderRightBalanceRaise` と `\PosterHeaderRightBalanceGap` を適用し，両領域の上下余白を近づけています．
 - **ポスター番号非表示時は，右側テキストの位置と行間を変更しません．** 追加調整は `\ifPosterShowNumber` の場合だけ有効です．主ヘッダ116 mm・本文40 pt・既存フォントサイズ・ロゴ寸法は変更しません．
+
+## Tableの二重罫線とPRD Figureキャプション（2026-11-18）
+
+- APS *Physical Review Style and Notation Guide*（[公式PDF](https://cdn.journals.aps.org/files/styleguide-pr.pdf)，Tables pp. 9–10，Figure captions p. 13）を参照．
+- Tableの上下は `\hline\hline`，見出し下は `\hline`．線幅は `poster-config.tex` の `\PosterTableRuleWidth`（初期値1.5 pt），二重線の線間隔は `\PosterTableDoubleRuleSep`（初期値6 pt）で変更できます．TeX標準の `table`・`tabular` のままで，Table環境内にのみ設定を適用します．
+- Figureキャプションは，図の下の `\caption{...}` により `FIG. 1. ...` の大文字略称＋アラビア数字＋ピリオドで出力します．Tableキャプションは表の上に `TABLE I. ...`．両者とも黒系本文色に統一し，中央揃えを維持します．
+- 実際の研究図では，キャプション単体で図を理解できるよう，未定義の記号・略語・パネルを説明してください．プレースホルダーのキャプション文章はPRDに準拠した科学的説明ではありません．
+- この調整は **ポスター向けの視認性調整**です．APS/PRDの版面レイアウトや字体を完全再現するものではありません．
