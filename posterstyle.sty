@@ -190,7 +190,18 @@
 % Native Beamer section counter, native block and alertblock environments.
 % Section headings and zref-clever use the same uppercase Roman numbering.
 \renewcommand{\thesection}{\Roman{section}}
-\zcsetup{cap,abbrev}
+% Use a separate value for zref-clever references only. Subfigure captions
+% and ordinary \ref retain their existing parenthesized numbering.
+\def\PosterSubfigureCounter{subfigure}
+\zref@newprop{posterref}{%
+  \ifx\@currentcounter\PosterSubfigureCounter
+    \thefigure\nobreakspace\thesubfigure
+  \else
+    \@currentlabel
+  \fi
+}
+\zref@addprop\ZREF@mainlist{posterref}
+\zcsetup{cap,abbrev,ref=posterref}
 
 % Beamer inserts an empty zero-height paragraph box when a Section starts
 % with a list. Remove it only for an outermost first list. Do not alter
