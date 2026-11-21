@@ -192,6 +192,7 @@
 \renewcommand{\thesection}{\Roman{section}}
 % Use a separate value for zref-clever references only. Subfigure captions
 % and ordinary \ref retain their existing parenthesized numbering.
+\makeatletter
 \def\PosterSubfigureCounter{subfigure}
 \zref@newprop{posterref}{%
   \ifx\@currentcounter\PosterSubfigureCounter
@@ -201,6 +202,7 @@
   \fi
 }
 \zref@addprop\ZREF@mainlist{posterref}
+\makeatother
 \zcsetup{cap,abbrev,ref=posterref}
 
 % Beamer inserts an empty zero-height paragraph box when a Section starts
