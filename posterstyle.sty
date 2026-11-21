@@ -79,8 +79,8 @@
 \setbeamertemplate{navigation symbols}{}
 % APS/PRD captions: FIG. 1. / TABLE I.
 % Single-line captions are centered. Multi-line captions align all lines
-% at the FIG./TABLE label's start and use an inset text area.
-% Subfigure captions retain their separate hanging indentation.
+% at the FIG./TABLE label's start. Section bodies provide the shared inset;
+% captions must not add it again.
 \renewcommand{\thetable}{\Roman{table}}
 % Preserve uppercase TABLE when babel initializes its English caption names.
 % APS guide: TABLE I. and FIG. 1. (uppercase name, trailing periods).
@@ -90,7 +90,7 @@
   \renewcommand{\figurename}{FIG.}%
 }
 % Measure the full caption for one-line centering. Long captions use
-% ordinary paragraph alignment inside a centered, slightly inset box.
+% ordinary paragraph alignment inside the shared content width.
 \newsavebox{\PosterCaptionLabelBox}
 \newsavebox{\PosterCaptionFullBox}
 \defbeamertemplate{caption}{poster-prd}{%
@@ -104,7 +104,7 @@
   \sbox{\PosterCaptionFullBox}{%
     \usebox{\PosterCaptionLabelBox}\insertcaption}%
   \centering
-  \begin{minipage}{\dimexpr\linewidth-2\PosterCaptionHorizontalInset\relax}%
+  \begin{minipage}{\linewidth}%
     \ifdim\wd\PosterCaptionFullBox<\linewidth
       \centering\usebox{\PosterCaptionFullBox}\par
     \else
@@ -117,15 +117,15 @@
 \setbeamertemplate{caption label separator}[period]
 \setbeamertemplate{caption}[poster-prd]
 \setbeamerfont{caption}{size=\PosterCaptionFont}
-% subfig is optional. When loaded in the preamble, set its captions
-% at begin-document (after package loading) without changing Beamer captions.
-% format=hang aligns wrapped lines under the text after (a)/(b).
+% subfig is optional. Use parenthesized subfigure references and center
+% each subcaption within its own subfloat width, including wrapped lines.
 \AtBeginDocument{%
   \@ifpackageloaded{subfig}{%
+    \renewcommand{\thesubfigure}{(\alph{subfigure})}%
     \DeclareCaptionFont{postersub}{\PosterCaptionFont}%
     \captionsetup[subfloat]{%
-      font=postersub,format=hang,justification=raggedright,
-      singlelinecheck=false}%
+      font=postersub,format=plain,labelformat=simple,
+      justification=centering,singlelinecheck=true}%
   }{}%
 }
 % Use the normal text color for PRD-like captions instead of muted gray.
@@ -224,7 +224,8 @@
   {\color{PosterSectionRule}\hrule height \PosterSectionRuleWidth}%
 }
 
-% Regular section: centered heading, subtle rule, body after a measured gap.
+% Regular section: centered heading and full-width rule. The inner body box
+% applies the shared inset to paragraphs, lists, figures, and captions.
 \defbeamertemplate{block begin}{poster-ruled}{%
   \par\vspace{\PosterSectionTopGap}%
   \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block title}%
@@ -233,19 +234,22 @@
   \end{beamercolorbox}%
   \vspace{\PosterRuleBodyGap}%
   \begin{beamercolorbox}[wd=\linewidth,sep=0pt]{block body}%
+    \hspace*{\PosterCaptionHorizontalInset}%
+    \begin{minipage}{\dimexpr\linewidth-2\PosterCaptionHorizontalInset\relax}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body}%
     \expandafter\let\csname beamer@firstlineitemizeunskip\endcsname\PosterFixInitialList%
 }
 \defbeamertemplate{block end}{poster-ruled}{%
+    \end{minipage}%
   \end{beamercolorbox}%
   \par\vspace{\PosterSectionBottomGap}%
 }
 \setbeamertemplate{block begin}[poster-ruled]
 \setbeamertemplate{block end}[poster-ruled]
 
-% Highlighted section: same typography/rule geometry, equal inset on
-% heading and body. Two equal-width boxes avoid the staggered edges in v2.
+% Highlighted section: same typography/rule geometry and full-width pale
+% background. The inner body shares the regular section's text margins.
 \defbeamertemplate{block alerted begin}{poster-highlight}{%
   \par\vspace{\PosterSectionTopGap}%
   \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block title alerted}%
@@ -253,11 +257,14 @@
     \PosterHeadingRule
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=\linewidth,sep=\PosterHighlightPadding]{block body alerted}%
+    \hspace*{\dimexpr\PosterCaptionHorizontalInset-\PosterHighlightPadding\relax}%
+    \begin{minipage}{\dimexpr\linewidth-2\PosterCaptionHorizontalInset\relax}%
     \let\PosterActiveBodyFont\PosterSectionBodyFont
     \usebeamerfont{block body alerted}%
     \expandafter\let\csname beamer@firstlineitemizeunskip\endcsname\PosterFixInitialList%
 }
 \defbeamertemplate{block alerted end}{poster-highlight}{%
+    \end{minipage}%
   \end{beamercolorbox}%
   \par\vspace{\PosterSectionBottomGap}%
 }
